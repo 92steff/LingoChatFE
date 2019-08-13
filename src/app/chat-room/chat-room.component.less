@@ -1,0 +1,24 @@
+@import "../../less/variables.less";
+
+.chatRoomWrapper {
+    display:flex;
+    min-height: calc(100vh - 84px); // 84px === header height
+}
+
+.friendListWrapper {
+    flex:1;
+    background:steelblue;
+    padding: @paddings[lg];
+}
+
+.chatWrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 4;
+}
+
+.chatUnitWrapper {
+    width:100%;
+    background:white;
+    border:1px solid greenyellow;
+}

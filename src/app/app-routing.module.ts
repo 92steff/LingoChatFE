@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { SignUpComponent } from './auth/sign-up/sign-up.component';
-import { ChatRoomComponent } from './chat/chat-room/chat-room.component';
+import { HomeComponent } from './home/home.component';
+import { ChatRoomComponent } from './chat-room/chat-room.component';
 
 
 const routes: Routes = [
-  {path: '', component: ChatRoomComponent}
+  {path: '', component: HomeComponent, children: [
+    {path: '', component: ChatRoomComponent}
+  ]}
 ];
 
 @NgModule({

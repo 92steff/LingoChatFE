@@ -1,0 +1,33 @@
+@import '../../../less/variables.less';
+
+.chatContainer {
+    display:flex;
+    flex-direction: column;
+    height:100%;
+    background:white;
+}
+
+.chatUnitHeader {
+    height: 64px;
+    background: cornflowerblue;
+}
+
+.chatInfo {
+    padding: @paddings[md];
+    height:inherit;
+}
+
+.chatFeedWrapper {
+    padding: @paddings[md];
+    flex:1 1 auto;
+    height:0;
+    overflow-y:auto;
+}
+
+.chatFormWrapper {
+    width:100%;
+    padding: @paddings[md];
+    height:64px;
+    border:1px solid greenyellow;
+    background: darkslategray;
+}
