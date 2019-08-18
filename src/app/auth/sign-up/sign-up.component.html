@@ -1,1 +1,47 @@
-<p>sign-up works!</p>
+<div class="darkened-bck">
+    
+        <div class="bck-gradient"></div>
+    
+        <div class="auth-content p-3">
+            
+            <h5 class="auth-info">Create a New Account:</h5>
+    
+            <form [formGroup]="signUpForm">
+
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Email:</span>
+                    </div>
+                        <input type="email" class="form-control" formControlName="email">
+                </div>
+    
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Username:</span>
+                    </div>
+                        <input type="text" class="form-control" formControlName="username">
+                </div>
+
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Password:</span>
+                    </div>
+                    <input type="password" class="form-control" formControlName="password">
+                </div>
+
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Re-enter:</span>
+                    </div>
+                    <input type="passwod" class="form-control" formControlName="rePassword">
+                </div>
+
+                <button type="submit" class="btn btn-secondary form-control">Sign up</button>
+
+            </form>
+    
+        </div>
+        
+    </div>
+    
+    

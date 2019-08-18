@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -14,6 +14,8 @@ import { ChatUnitComponent } from './chat-room/chat-unit/chat-unit.component';
 import { ChatFeedComponent } from './chat-room/chat-feed/chat-feed.component';
 import { ChatFormComponent } from './chat-room/chat-form/chat-form.component';
 import { MessageComponent } from './chat-room/message/message.component';
+import { UserHeadComponent } from './chat-room/user-head/user-head.component';
+import { SignInComponent } from './auth/sign-in/sign-in.component';
 
 
 @NgModule({
@@ -27,11 +29,13 @@ import { MessageComponent } from './chat-room/message/message.component';
     ChatUnitComponent,
     ChatFeedComponent,
     ChatFormComponent,
-    MessageComponent
+    MessageComponent,
+    UserHeadComponent,
+    SignInComponent
   ],
   imports: [
     BrowserModule,
-    FormsModule,
+    ReactiveFormsModule,
     AppRoutingModule,
     NgbModule
   ],
