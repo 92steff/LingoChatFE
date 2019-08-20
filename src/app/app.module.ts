@@ -1,7 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { reducers } from './store/app.reducers';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +20,7 @@ import { ChatFormComponent } from './chat-room/chat-form/chat-form.component';
 import { MessageComponent } from './chat-room/message/message.component';
 import { UserHeadComponent } from './chat-room/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
+import { AuthEffects } from './auth/store/auth.effects';
 
 
 @NgModule({
@@ -37,6 +42,9 @@ import { SignInComponent } from './auth/sign-in/sign-in.component';
     BrowserModule,
     ReactiveFormsModule,
     AppRoutingModule,
+    HttpClientModule,
+    StoreModule.forRoot(reducers),
+    EffectsModule.forRoot([AuthEffects]),
     NgbModule
   ],
   providers: [],

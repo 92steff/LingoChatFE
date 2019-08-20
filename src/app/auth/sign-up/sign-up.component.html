@@ -1,4 +1,8 @@
 <div class="darkened-bck">
+
+        <ngb-toast header="Notification header">
+            Content of the notification
+        </ngb-toast>
     
         <div class="bck-gradient"></div>
     
@@ -6,20 +10,27 @@
             
             <h5 class="auth-info">Create a New Account:</h5>
     
-            <form [formGroup]="signUpForm">
+            <form [formGroup]="signUpForm" (ngSubmit)="submitForm(signUpForm)">
+
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">First name:</span>
+                    </div>
+                        <input type="text" class="form-control" formControlName="firstName">
+                </div>
+
+                <div class="input-group my-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Last name:</span>
+                    </div>
+                        <input type="text" class="form-control" formControlName="lastName">
+                </div>
 
                 <div class="input-group my-3">
                     <div class="input-group-prepend">
                         <span class="input-group-text">Email:</span>
                     </div>
                         <input type="email" class="form-control" formControlName="email">
-                </div>
-    
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Username:</span>
-                    </div>
-                        <input type="text" class="form-control" formControlName="username">
                 </div>
 
                 <div class="input-group my-3">
