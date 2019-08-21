@@ -21,6 +21,7 @@ import { MessageComponent } from './chat-room/message/message.component';
 import { UserHeadComponent } from './chat-room/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { AuthEffects } from './auth/store/auth.effects';
+import { ToastService } from './services/toast.service';
 
 
 @NgModule({
@@ -47,7 +48,7 @@ import { AuthEffects } from './auth/store/auth.effects';
     EffectsModule.forRoot([AuthEffects]),
     NgbModule
   ],
-  providers: [],
+  providers: [ToastService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

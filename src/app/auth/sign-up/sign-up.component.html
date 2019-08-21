@@ -1,58 +1,58 @@
 <div class="darkened-bck">
 
-        <ngb-toast header="Notification header">
-            Content of the notification
-        </ngb-toast>
-    
-        <div class="bck-gradient"></div>
-    
-        <div class="auth-content p-3">
-            
-            <h5 class="auth-info">Create a New Account:</h5>
-    
-            <form [formGroup]="signUpForm" (ngSubmit)="submitForm(signUpForm)">
+  <div class="error-info">
+    <ngb-toast *ngFor="let toast of ts.toasts" class="bg-danger text-light" [delay]="10000" (hide)="ts.remove(toast)">
+      {{toast}}
+    </ngb-toast>
+  </div>
 
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">First name:</span>
-                    </div>
-                        <input type="text" class="form-control" formControlName="firstName">
-                </div>
+  <div class="bck-gradient"></div>
 
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Last name:</span>
-                    </div>
-                        <input type="text" class="form-control" formControlName="lastName">
-                </div>
+  <div class="auth-content p-3">
 
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Email:</span>
-                    </div>
-                        <input type="email" class="form-control" formControlName="email">
-                </div>
+    <h5 class="auth-info">Create a New Account:</h5>
 
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Password:</span>
-                    </div>
-                    <input type="password" class="form-control" formControlName="password">
-                </div>
+    <form [formGroup]="signUpForm" (ngSubmit)="submitForm(signUpForm)">
 
-                <div class="input-group my-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Re-enter:</span>
-                    </div>
-                    <input type="passwod" class="form-control" formControlName="rePassword">
-                </div>
-
-                <button type="submit" class="btn btn-secondary form-control">Sign up</button>
-
-            </form>
-    
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">First name:</span>
         </div>
-        
-    </div>
-    
-    
+        <input type="text" class="form-control" formControlName="firstName">
+      </div>
+
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Last name:</span>
+        </div>
+        <input type="text" class="form-control" formControlName="lastName">
+      </div>
+
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Email:</span>
+        </div>
+        <input type="email" class="form-control" formControlName="email">
+      </div>
+
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Password:</span>
+        </div>
+        <input type="password" class="form-control" formControlName="password">
+      </div>
+
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Re-enter:</span>
+        </div>
+        <input type="passwod" class="form-control" formControlName="rePassword">
+      </div>
+
+      <button type="submit" class="btn btn-secondary form-control">Sign up</button>
+
+    </form>
+
+  </div>
+
+</div>

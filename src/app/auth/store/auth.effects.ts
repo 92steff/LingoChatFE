@@ -20,11 +20,13 @@ export class AuthEffects {
             })
         }),
         map((res) => {
+            console.log(res);
             if (res.status === 200) {
                 return {
                     type: AuthActions.SIGNUP
                 }
             } else {
+                console.log(res)
                 return {
                     type: AuthActions.DISPLAY_ERROR,
                     payload: res.statusText
