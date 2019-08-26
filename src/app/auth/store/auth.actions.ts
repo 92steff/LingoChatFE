@@ -2,6 +2,8 @@ import { Action } from '@ngrx/store';
 
 export const TRY_SIGNUP = 'TRY_SIGNUP';
 export const SIGNUP = 'SIGNUP';
+export const TRY_LOGIN = 'TRY_LOGIN';
+export const LOGIN = 'LOGIN';
 export const DISPLAY_ERROR = 'DISPLAY_ERROR';
 
 export class TrySignup implements Action {
@@ -10,8 +12,14 @@ export class TrySignup implements Action {
     constructor(public payload:{firstName:string, lastName:string, email:string, password:string}) {}
 }
 
-export class Signup implements Action {
-    readonly type = SIGNUP;
+export class TryLogin implements Action {
+    readonly type = TRY_LOGIN;
+
+    constructor(public payload: {email:string, password:string}) {}
+}
+
+export class Login implements Action {
+    readonly type = LOGIN;
 }
 
 export class DisplayError implements Action {
@@ -22,5 +30,6 @@ export class DisplayError implements Action {
 
 export type AuthActions = 
     TrySignup |
-    Signup |
-    DisplayError;
+    DisplayError |
+    TryLogin |
+    Login;

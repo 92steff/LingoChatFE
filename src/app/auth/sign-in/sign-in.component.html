@@ -1,33 +1,44 @@
 <div class="darkened-bck">
-    
-    <div class="bck-gradient"></div>
 
-    <div class="auth-content p-3">
-        
-        <h5 class="auth-info">Enter your credentials:</h5>
+  <div class="error-info" *ngIf="error$ != null">
+	<ngb-toast class="bg-danger text-light" [delay]="10000" (hide)="ts.remove(toast)">
+      {{error$ | async}}
+    </ngb-toast>
+  </div>
 
-        <form [formGroup]="signInForm">
-            <div class="input-group my-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Email:</span>
-                </div>
-                    <input type="email" class="form-control">
-            </div>
+  <div class="error-info">
+    <ngb-toast *ngFor="let toast of ts.toasts" class="bg-danger text-light" [delay]="10000" (hide)="ts.remove(toast)">
+      {{toast}}
+    </ngb-toast>
+  </div>
 
-            <div class="input-group my-3">
-                <div class="input-group-prepend">
-                    <span class="input-group-text">Password:</span>
-                </div>
-                    <input type="password" class="form-control">
-            </div>
-            
-            <div class="helper-alignment">
-                <button type="submit" class="btn btn-secondary">Log in</button>
-                <span>Don't have an account? <a routerLink="/sign-up">Sign up</a></span>
-            </div>
-        </form>
+  <div class="bck-gradient"></div>
 
-    </div>
-    
+  <div class="auth-content p-3">
+
+    <h5 class="auth-info">Enter your credentials:</h5>
+
+    <form [formGroup]="signInForm" (ngSubmit)="login(signInForm)">
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Email:</span>
+        </div>
+        <input type="email" class="form-control" formControlName="email">
+      </div>
+
+      <div class="input-group my-3">
+        <div class="input-group-prepend">
+          <span class="input-group-text">Password:</span>
+        </div>
+        <input type="password" class="form-control" formControlName="password">
+      </div>
+
+      <div class="helper-alignment">
+        <button type="submit" class="btn btn-secondary">Log in</button>
+        <span>Don't have an account? <a routerLink="/sign-up">Sign up</a></span>
+      </div>
+    </form>
+
+  </div>
+
 </div>
-

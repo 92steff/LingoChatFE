@@ -10,12 +10,13 @@ const routes: Routes = [
   {path: '', component: HomeComponent, children: [
     {path: '', component: ChatRoomComponent}
   ]},
-  {path: 'sign-in', component: SignInComponent},
-  {path: 'sign-up', component: SignUpComponent}
+  {path: 'sign-up', component: SignUpComponent},
+  {path: 'sign-in', component: SignInComponent}
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule]
 })
+
 export class AppRoutingModule { }
