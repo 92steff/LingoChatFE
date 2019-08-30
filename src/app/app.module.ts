@@ -22,6 +22,7 @@ import { UserHeadComponent } from './chat-room/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { AuthEffects } from './auth/store/auth.effects';
 import { ToastService } from './services/toast.service';
+import { AuthService } from './services/auth.service';
 
 
 @NgModule({
@@ -48,7 +49,7 @@ import { ToastService } from './services/toast.service';
     EffectsModule.forRoot([AuthEffects]),
     NgbModule
   ],
-  providers: [ToastService],
+  providers: [ToastService, AuthService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
