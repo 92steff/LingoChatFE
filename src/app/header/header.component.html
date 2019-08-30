@@ -1,3 +1,11 @@
 <header>
     <h2>LingoChat</h2>
+    <nav class="user-nav">
+        <div class="profile-link">
+            <a routerLink="#">{{loggedUser$ | async}}</a> 
+        </div>
+        <div class="logout">
+            <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>
+        </div>
+    </nav>
 </header>

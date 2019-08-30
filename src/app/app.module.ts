@@ -23,7 +23,9 @@ import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { AuthEffects } from './auth/store/auth.effects';
 import { ToastService } from './services/toast.service';
 import { AuthService } from './services/auth.service';
-
+import { AuthGuardService } from './auth/auth.guard';
+import { JwtModule } from '@auth0/angular-jwt';
+import { CookieService } from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -47,9 +49,19 @@ import { AuthService } from './services/auth.service';
     HttpClientModule,
     StoreModule.forRoot(reducers),
     EffectsModule.forRoot([AuthEffects]),
-    NgbModule
+    NgbModule,
+    JwtModule.forRoot({
+      config: {
+        // tokenGetter: () => AuthService.l
+      }
+    })
   ],
-  providers: [ToastService, AuthService],
+  providers: [
+    ToastService,
+    AuthService,
+    AuthGuardService,
+    CookieService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

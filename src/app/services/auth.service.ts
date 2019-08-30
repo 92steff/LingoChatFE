@@ -9,8 +9,7 @@ export class AuthService {
 
     signup(authData) {
         return this.http.post(environment.apiEndpoint + 'users/register', authData, {
-            headers: new HttpHeaders().set('Content-Type', 'application/json'),
-            observe: 'response'
+            headers: new HttpHeaders().set('Content-Type', 'application/json')
         })
     }
 

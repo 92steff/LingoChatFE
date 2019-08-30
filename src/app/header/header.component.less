@@ -1,6 +1,9 @@
 @import "../../less/variables.less";
 
 header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     height:84px;
     padding: @paddings[lg];
     background:silver;
@@ -8,6 +11,19 @@ header {
 
 h2 {
     color: darkcyan;
-    line-height: 1;
     padding-left: @paddings[md];
+}
+
+.user-nav {
+    display: flex;
+    align-items: center;
+}
+
+.logout, .profile-link {
+    padding: @paddings[sm];
+}
+
+.logout {
+    margin-left:24px;
+
 }
