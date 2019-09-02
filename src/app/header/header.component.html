@@ -1,11 +1,29 @@
 <header>
+  <div class="logo-wrapper">
     <h2>LingoChat</h2>
+  </div>
+  <div class="flex-fix">
+    <div class="search-wrapper">
+      <input class="form-control" [(ngModel)]="searchUsers" type="text" placeholder="Search" #search>
+      <div *ngIf="searchUsers" class="search-results">
+        <ul *ngFor="let user of usersArr | filter: searchUsers">
+          <li routerLink="sign-in">
+			<app-user-head 
+				[username]="user.firstName">
+			</app-user-head>
+          </li>
+        </ul>
+      </div>
+
+    </div>
     <nav class="user-nav">
-        <div class="profile-link">
-            <a routerLink="#">{{loggedUser$ | async}}</a> 
-        </div>
-        <div class="logout">
-            <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>
-        </div>
+      <div class="profile-link">
+        <a routerLink="#">{{loggedUser$ | async}}</a>
+      </div>
+      <div class="logout">
+        <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>
+      </div>
     </nav>
+  </div>
+
 </header>

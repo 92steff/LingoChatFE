@@ -1,29 +1,63 @@
 @import "../../less/variables.less";
 
 header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    height:84px;
-    padding: @paddings[lg];
-    background:silver;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 84px;
+  background: silver;
+}
+
+.flex-fix {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex: 4;
+}
+
+.logo-wrapper {
+  padding: 0 @paddings[lg];
+  flex: 1;
 }
 
 h2 {
-    color: darkcyan;
-    padding-left: @paddings[md];
+  color: darkcyan;
+}
+
+.search-wrapper {
+  position: relative;
+  flex: 1;
+}
+
+.search-results {
+  position: absolute;
+  width: 100%;
+  background: #c0c0c0;
+}
+
+ul {
+  margin-bottom: 1px;
+}
+
+li {
+  display: flex;
+  padding: @paddings[md];
+  background: wheat;
+  cursor: pointer;
 }
 
 .user-nav {
-    display: flex;
-    align-items: center;
+  display: flex;
+  flex: 2;
+  align-items: center;
+  justify-content: flex-end;
 }
 
-.logout, .profile-link {
-    padding: @paddings[sm];
+.logout,
+.profile-link {
+  padding: @paddings[sm];
 }
 
 .logout {
-    margin-left:24px;
-
+  margin: 0 24px;
 }

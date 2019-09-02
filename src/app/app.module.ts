@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,6 +26,8 @@ import { AuthService } from './services/auth.service';
 import { AuthGuardService } from './auth/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
+import { UserService } from './services/user.service';
+import { FilterPipe } from './pipes/filter.pipe';
 
 @NgModule({
   declarations: [
@@ -40,10 +42,12 @@ import { CookieService } from 'ngx-cookie-service';
     ChatFormComponent,
     MessageComponent,
     UserHeadComponent,
-    SignInComponent
+    SignInComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -60,7 +64,8 @@ import { CookieService } from 'ngx-cookie-service';
     ToastService,
     AuthService,
     AuthGuardService,
-    CookieService
+    CookieService,
+    UserService
   ],
   bootstrap: [AppComponent]
 })
