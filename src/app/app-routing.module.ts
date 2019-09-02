@@ -12,7 +12,8 @@ const routes: Routes = [
     {path: '', component: ChatRoomComponent}
   ], canActivate: [AuthGuardService]},
   {path: 'sign-up', component: SignUpComponent},
-  {path: 'sign-in', component: SignInComponent}
+  {path: 'sign-in', component: SignInComponent},
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

@@ -21,8 +21,9 @@ export class AuthEffects {
             return this.authService.signup(authData)
                 .pipe(
                     map((res:AuthResponse) => {
-                        const decodedData= this.decodeServerResponse(res);
-                        return new AuthActions.Login({ token: res.token, user: decodedData.user });
+                        const username = this.extractUser(res);
+                        this.cookieS.set('userData', JSON.stringify({user: username, token: res.token}));
+                        return new AuthActions.Login({ token: res.token, user: username });
                     }),
                     catchError(err => of(new AuthActions.DisplayError(err.statusText))),
 
@@ -42,7 +43,8 @@ export class AuthEffects {
             return this.authService.login(b64)
                 .pipe(
                     map((res: AuthResponse) => {
-                        const username = this.decodeServerResponse(res);
+                        const username = this.extractUser(res);
+                        this.cookieS.set('userData', JSON.stringify({user: username, token: res.token}));
                         return new AuthActions.Login({ token: res.token, user: username });
                     }),
                     catchError(err => of(new AuthActions.DisplayError(err.statusText))),
@@ -54,7 +56,7 @@ export class AuthEffects {
 
     constructor(private actions$: Actions, private router: Router, private authService: AuthService, private cookieS: CookieService) { }
 
-    decodeServerResponse(res: AuthResponse) {
+    extractUser(res: AuthResponse) {
         const helper = new JwtHelperService();
         const token = helper.decodeToken(res.token);
         const user = token['firstName'];

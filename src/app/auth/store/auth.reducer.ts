@@ -38,6 +38,13 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 authenticated: false,
                 error: action.payload
             };
+        case AuthActions.VERIFY_LOGGED_STATUS:
+            return {
+                ...state,
+                loggedUser: action.payload.user,
+                token: action.payload.token,
+                authenticated: true,
+            }
         default:
             return state;
     }

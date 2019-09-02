@@ -6,6 +6,7 @@ export const TRY_LOGIN = 'TRY_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const DISPLAY_ERROR = 'DISPLAY_ERROR';
+export const VERIFY_LOGGED_STATUS = 'VERIFY_LOGGED_STATUS';
 
 export class TrySignup implements Action {
     readonly type = TRY_SIGNUP;
@@ -35,8 +36,15 @@ export class DisplayError implements Action {
     constructor(public payload:string) {}
 }
 
+export class VerifyLoggedStatus implements Action {
+    readonly type = VERIFY_LOGGED_STATUS;
+
+    constructor(public payload: {user: string, token: string}) {}
+}
+
 export type AuthActions = TrySignup 
     |   DisplayError 
     |   TryLogin 
     |   Login
-    |   Logout;
+    |   Logout
+    |   VerifyLoggedStatus;
