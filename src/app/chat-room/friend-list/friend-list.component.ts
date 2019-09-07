@@ -21,7 +21,6 @@ export class FriendListComponent implements OnInit {
     this.friendsArr = this.store.select(UserSelectors.selectUserFriends);
   }
 
- 
   openChat(friend:User) {
     this.store.dispatch(new UserActions.OpenChat(friend));
   }

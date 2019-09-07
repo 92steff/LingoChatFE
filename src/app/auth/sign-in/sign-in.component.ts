@@ -37,14 +37,13 @@ export class SignInComponent implements OnInit {
 
   defineErrMsg(formG:FormGroup) {
     const form = formG.value;
+    
     for (let prop in form) {
       if (form[prop] === null || form[prop] === '') {
-        this.ts.add('All fields are required!');
-        return;
+        return this.ts.add('All fields are required!');
       }
-      if (formG.get('email').errors['email']) {
-        this.ts.add('This is not a vaild email!');
-        return;
+      if (formG.get('email').errors) {
+        return this.ts.add('This is not a vaild email!');
       }
     }
   }

@@ -35,12 +35,6 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 authenticated: false,
                 error: null
             };
-        case AuthActions.DISPLAY_ERROR:
-            return {
-                ...state,
-                authenticated: false,
-                error: action.payload
-            };
         case AuthActions.VERIFY_LOGGED_STATUS:
             return {
                 ...state,

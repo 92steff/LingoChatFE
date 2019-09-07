@@ -3,11 +3,12 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/app/auth/auth.service';
 import { map, switchMap, catchError, finalize } from 'rxjs/operators';
-import { of } from 'rxjs';
+import { of, throwError, from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthResponse } from '../../models/authResponse.model';
 import * as AuthActions from './auth.actions';
+import { ToastService } from 'src/app/services/toast.service';
 
 @Injectable()
 export class AuthEffects {
@@ -25,7 +26,10 @@ export class AuthEffects {
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
                         return new AuthActions.Login({ token: res.token, user: username, userID: res.userID });
                     }),
-                    catchError(err => of(new AuthActions.DisplayError(err.statusText))),
+                    catchError((err) => {
+                        this.ts.add(err.statusText);
+                        return from([]);
+                    }),
 
                     finalize(() => { this.router.navigate(['/']) })
                 );
@@ -47,14 +51,17 @@ export class AuthEffects {
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
                         return new AuthActions.Login({ token: res.token, user: username, userID: res.userID });
                     }),
-                    catchError(err => of(new AuthActions.DisplayError(err.statusText))),
+                    catchError((err) => {
+                        this.ts.add(err.statusText);
+                        return from([]);
+                    }),
 
                     finalize(() => { this.router.navigate(['/']) })
                 );
         })
     );
 
-    constructor(private actions$: Actions, private router: Router, private authService: AuthService, private cookieS: CookieService) { }
+    constructor(private actions$: Actions, private router: Router, private authService: AuthService, private cookieS: CookieService, private ts: ToastService) { }
 
     extractUser(res: AuthResponse) {
         const helper = new JwtHelperService();

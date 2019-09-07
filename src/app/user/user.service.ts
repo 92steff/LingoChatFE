@@ -17,12 +17,6 @@ export class UserService {
   }
 
   getFriends(uid) {
-    // let uid: string;
-    // this.store.select(AuthSelectors.selectUserID).subscribe(
-    //   (res) => {
-    //     uid = res
-    //   }
-    // )
     return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friends');
   }
 

@@ -17,6 +17,11 @@ export class ChatRoomComponent implements OnInit {
 
   ngOnInit() {
     this.openChats$ = this.store.select(UserSelectors.selectOpenedChats);
+    this.openChats$.subscribe(
+      (r)=> {
+        console.log(r)
+      }
+    )
   }
 
 }

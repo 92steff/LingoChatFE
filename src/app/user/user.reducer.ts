@@ -15,16 +15,16 @@ export function userReducer(state = initialState, action: UserActions.UserAction
     switch (action.type) {
         case UserActions.SET_FRIENDS:
             return {
-                ...state,
+                openedChats: state.openedChats,
                 friends: action.payload
             };
         case UserActions.OPEN_CHAT:
             const updatedChats = [...state.openedChats];
             updatedChats.push(action.payload);
             return {
-                ...state,
+                friends: state.friends,
                 openedChats: updatedChats
-            }
+            };
         default: return state;
     }
 }

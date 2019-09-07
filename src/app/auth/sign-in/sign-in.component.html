@@ -1,11 +1,5 @@
 <div class="darkened-bck">
-
-  <div class="error-info" *ngIf="error$ != null">
-	<ngb-toast class="bg-danger text-light" [delay]="10000" (hide)="ts.remove(toast)">
-      {{error$ | async}}
-    </ngb-toast>
-  </div>
-
+  
   <div class="error-info">
     <ngb-toast *ngFor="let toast of ts.toasts" class="bg-danger text-light" [delay]="10000" (hide)="ts.remove(toast)">
       {{toast}}
