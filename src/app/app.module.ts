@@ -29,6 +29,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './user/user.service';
 import { FilterPipe } from './pipes/filter.pipe';
 import { UserEffects } from './user/user.effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools'
 
 export function getToken():string {
     let cookieS:CookieService;
@@ -59,6 +60,9 @@ export function getToken():string {
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
+    StoreDevtoolsModule.instrument({
+      maxAge: 10
+    }),
     EffectsModule.forRoot([AuthEffects, UserEffects]),
     NgbModule,
     JwtModule.forRoot({

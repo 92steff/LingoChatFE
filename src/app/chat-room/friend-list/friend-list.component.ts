@@ -17,7 +17,6 @@ export class FriendListComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    this.store.dispatch(new UserActions.GetFriends());
     this.friendsArr = this.store.select(UserSelectors.selectUserFriends);
   }
 

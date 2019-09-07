@@ -2,13 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/app/auth/auth.service';
-import { map, switchMap, catchError, finalize } from 'rxjs/operators';
-import { of, throwError, from } from 'rxjs';
+import { map, switchMap, catchError, finalize, mergeMap } from 'rxjs/operators';
+import { from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthResponse } from '../../models/authResponse.model';
-import * as AuthActions from './auth.actions';
 import { ToastService } from 'src/app/services/toast.service';
+import * as AuthActions from './auth.actions';
+import * as UserActions from '../../user/user.actions';
 
 @Injectable()
 export class AuthEffects {
@@ -21,10 +22,13 @@ export class AuthEffects {
         switchMap((authData) => {
             return this.authService.signup(authData)
                 .pipe(
-                    map((res: AuthResponse) => {
+                    mergeMap((res: AuthResponse) => {
                         const username = this.extractUser(res);
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
-                        return new AuthActions.Login({ token: res.token, user: username, userID: res.userID });
+                        return [
+                            new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
+                            new UserActions.GetFriends()
+                        ]
                     }),
                     catchError((err) => {
                         this.ts.add(err.statusText);
@@ -46,10 +50,13 @@ export class AuthEffects {
             const b64 = btoa(authData.email + ':' + authData.password);
             return this.authService.login(b64)
                 .pipe(
-                    map((res: AuthResponse) => {
+                    mergeMap((res: AuthResponse) => { 
                         const username = this.extractUser(res);
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
-                        return new AuthActions.Login({ token: res.token, user: username, userID: res.userID });
+                        return [
+                            new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
+                            new UserActions.GetFriends()
+                        ]
                     }),
                     catchError((err) => {
                         this.ts.add(err.statusText);
