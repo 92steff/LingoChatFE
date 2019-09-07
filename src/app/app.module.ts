@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
@@ -22,12 +22,19 @@ import { UserHeadComponent } from './chat-room/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { AuthEffects } from './auth/store/auth.effects';
 import { ToastService } from './services/toast.service';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './auth/auth.service';
 import { AuthGuardService } from './auth/auth.guard';
 import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-import { UserService } from './services/user.service';
+import { UserService } from './user/user.service';
 import { FilterPipe } from './pipes/filter.pipe';
+import { UserEffects } from './user/user.effects';
+
+export function getToken():string {
+    let cookieS:CookieService;
+    const data = cookieS.get('userData');
+    return data['token'];
+}
 
 @NgModule({
   declarations: [
@@ -52,11 +59,12 @@ import { FilterPipe } from './pipes/filter.pipe';
     AppRoutingModule,
     HttpClientModule,
     StoreModule.forRoot(reducers),
-    EffectsModule.forRoot([AuthEffects]),
+    EffectsModule.forRoot([AuthEffects, UserEffects]),
     NgbModule,
     JwtModule.forRoot({
       config: {
-        // tokenGetter: () => AuthService.l
+        tokenGetter: getToken,
+        whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/"]
       }
     })
   ],

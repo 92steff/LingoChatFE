@@ -17,3 +17,13 @@ export const selectLoggedUser = createSelector(
     AuthState,
     (state) => state.loggedUser
 )
+
+export const selectUserID = createSelector(
+    AuthState,
+    (state) => state.userID
+)
+
+export const selectToken = createSelector(
+    AuthState,
+    (state) => state.token
+)

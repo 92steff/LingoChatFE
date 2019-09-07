@@ -23,7 +23,7 @@ export class TryLogin implements Action {
 export class Login implements Action {
     readonly type = LOGIN;
 
-    constructor(public payload: {token: string, user: string}) {}
+    constructor(public payload: {token: string, user: string, userID: string}) {}
 }
 
 export class Logout implements Action {
@@ -39,7 +39,7 @@ export class DisplayError implements Action {
 export class VerifyLoggedStatus implements Action {
     readonly type = VERIFY_LOGGED_STATUS;
 
-    constructor(public payload: {user: string, token: string}) {}
+    constructor(public payload: {user: string, token: string, userID: string}) {}
 }
 
 export type AuthActions = TrySignup 

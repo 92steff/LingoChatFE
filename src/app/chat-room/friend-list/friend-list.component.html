@@ -1,13 +1,8 @@
 <h5>Friend list</h5>
 
 <div class="userList">
-  <div class="userItem">
-    <app-user-head></app-user-head>
-  </div>
-  <div class="userItem">
-    <app-user-head></app-user-head>
-  </div>
-  <div class="userItem">
-    <app-user-head></app-user-head>
+  <div class="userItem" *ngFor="let friend of friendsArr | async" (click)="openChat(friend)">
+    <app-user-head
+    [user]="friend"></app-user-head>
   </div>
 </div>

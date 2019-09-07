@@ -3,6 +3,7 @@ import * as AuthActions from './auth.actions';
 export interface State {
     loggedUser: string | null;
     token: string | null;
+    userID: string | null;
     authenticated: boolean;
     error: string | null;
 };
@@ -10,6 +11,7 @@ export interface State {
 export const initialState: State = {
     loggedUser: null,
     token: null,
+    userID: null,
     authenticated: false,
     error: null
 };
@@ -21,6 +23,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 ...state,
                 loggedUser: action.payload.user,
                 token: action.payload.token,
+                userID: action.payload.userID,
                 authenticated: true,
                 error: null
             };
@@ -42,8 +45,9 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
             return {
                 ...state,
                 loggedUser: action.payload.user,
+                userID: action.payload.userID,
                 token: action.payload.token,
-                authenticated: true,
+                authenticated: true
             }
         default:
             return state;

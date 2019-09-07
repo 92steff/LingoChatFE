@@ -1,4 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
+import { User } from '../models/user.model';
 
 @Pipe({
   name: 'filter'
@@ -11,8 +12,9 @@ export class FilterPipe implements PipeTransform {
 
     searchVal = searchVal.toLocaleLowerCase();
 
-    return items.filter(it => {
-      return JSON.stringify(it).toLocaleLowerCase().includes(searchVal);
+    return items.filter((it:User) => {
+      return it.firstName.toLowerCase().startsWith(searchVal) || 
+             it.lastName.toLowerCase().startsWith(searchVal);  
     })
   }
 

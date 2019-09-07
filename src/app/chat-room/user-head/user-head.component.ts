@@ -6,7 +6,7 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./user-head.component.less']
 })
 export class UserHeadComponent implements OnInit {
-  @Input('username') username:string;
+  @Input('user') user: Object;
 
   constructor() { }
 

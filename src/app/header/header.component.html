@@ -9,12 +9,11 @@
         <ul *ngFor="let user of usersArr | filter: searchUsers">
           <li routerLink="sign-in">
 			<app-user-head 
-				[username]="user.firstName">
+        [user]="user">
 			</app-user-head>
           </li>
         </ul>
       </div>
-
     </div>
     <nav class="user-nav">
       <div class="profile-link">
@@ -25,5 +24,4 @@
       </div>
     </nav>
   </div>
-
 </header>
