@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
@@ -19,9 +19,8 @@ export class HeaderComponent implements OnInit {
   friendsArr: [];
   usersArr = [];
   searchUsers: string;
-  @ViewChild('search', { static: true }) search: ElementRef;
 
-  constructor(private store: Store<fromApp.AppState>, private authS: AuthService, private router: Router,private userS: UserService) {
+  constructor(private store: Store<fromApp.AppState>, private authS: AuthService, private router: Router, private userS: UserService) {
     userS.getUsers().subscribe((users: []) => {
       this.usersArr = users;
     })
@@ -29,9 +28,11 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser$ = this.store.select(authSelectors.selectLoggedUser);
-    this.search.nativeElement.onblur = () => {
-      this.searchUsers = '';
-    }
+    document.addEventListener('click', (event) => {
+      let target = <HTMLSelectElement> event.target;
+      const searchArea = document.getElementById('searchArea');
+      if (!searchArea.contains(target)) this.searchUsers = '';
+    })
   }
 
   logout() {

@@ -6,7 +6,6 @@ import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import * as fromApp from '../store/app.reducers';
 import * as AuthActions from './store/auth.actions';
-import * as AuthSelectors from './store/auth.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -39,6 +38,7 @@ export class AuthService {
 
     logout(): void {
         this.cookieS.delete('userData');
+        this.cookieS.delete('openChats');
     }
 
 }

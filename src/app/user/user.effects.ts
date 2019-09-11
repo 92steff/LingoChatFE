@@ -4,6 +4,7 @@ import { switchMap, map } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { UserService } from './user.service';
 import { User } from '../models/user.model';
+import { CookieService } from 'ngx-cookie-service';
 import * as fromApp from '../store/app.reducers';
 import * as UserActions from '../user/user.actions';
 import * as AuthSelectors from '../auth/store/auth.selectors';
@@ -20,12 +21,13 @@ export class UserEffects {
             return this.userS.getFriends(id)
                 .pipe(
                     map((friends: User[]) => {
+                        this.cookieS.set('userFriends', JSON.stringify(friends));
                         return new UserActions.SetFriends(friends);
                     })
                 )
         })
     )
 
-    constructor(private actions$: Actions, private store: Store<fromApp.AppState>, private userS: UserService) { }
+    constructor(private actions$: Actions, private store: Store<fromApp.AppState>, private userS: UserService, private cookieS: CookieService) { }
 
 }

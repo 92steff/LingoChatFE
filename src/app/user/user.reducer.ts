@@ -1,5 +1,5 @@
-import * as UserActions from './user.actions';
 import { User } from '../models/user.model';
+import * as UserActions from './user.actions';
 
 export interface State {
     friends: any[],
@@ -25,6 +25,17 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 friends: state.friends,
                 openedChats: updatedChats
             };
+        case UserActions.RETRIEVE_CHATS:
+            return {
+                friends: state.friends,
+                openedChats: [...action.payload]
+            };
+        case UserActions.CLOSE_CHAT:
+            const filterdArr = state.openedChats.filter(friend => friend.id !== action.payload);
+            return {
+                friends: state.friends,
+                openedChats: filterdArr
+            }
         default: return state;
     }
 }
