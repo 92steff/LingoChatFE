@@ -37,8 +37,7 @@ export class AuthService {
     }
 
     logout(): void {
-        this.cookieS.delete('userData');
-        this.cookieS.delete('openChats');
+        this.cookieS.deleteAll();
     }
 
 }

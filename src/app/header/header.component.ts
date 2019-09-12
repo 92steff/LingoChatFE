@@ -16,13 +16,15 @@ import * as AuthActions from '../auth/store/auth.actions';
 
 export class HeaderComponent implements OnInit {
   loggedUser$: Observable<string | null>;
-  friendsArr: [];
   usersArr = [];
   searchUsers: string;
 
-  constructor(private store: Store<fromApp.AppState>, private authS: AuthService, private router: Router, private userS: UserService) {
-    userS.getUsers().subscribe((users: []) => {
-      this.usersArr = users;
+  constructor(private store: Store<fromApp.AppState>, 
+    private authS: AuthService, 
+    private router: Router, 
+    private userS: UserService) {
+      userS.getUsers().subscribe((users: []) => {
+        this.usersArr = users;
     })
   }
 
@@ -33,6 +35,10 @@ export class HeaderComponent implements OnInit {
       const searchArea = document.getElementById('searchArea');
       if (!searchArea.contains(target)) this.searchUsers = '';
     })
+  }
+
+  checkFriendship(userID: string) {
+    return this.userS.isFriend(userID);
   }
 
   logout() {

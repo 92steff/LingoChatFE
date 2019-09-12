@@ -8,10 +8,11 @@
       <div *ngIf="searchUsers" class="search-results">
         <ul *ngFor="let user of usersArr | filter: searchUsers">
           <li>
-			<app-user-head 
-        [user]="user"
-        [parent]="'header'">
-			</app-user-head>
+            <app-user-head [user]="user">
+              <div class="float-right" *ngIf="!checkFriendship(user.id)">
+                <button type="button" class="btn btn-info float-right" (click)="addFriend()">Add Friend</button>
+              </div>
+            </app-user-head>
           </li>
         </ul>
       </div>

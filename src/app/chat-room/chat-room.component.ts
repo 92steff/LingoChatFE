@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Store } from '@ngrx/store';
@@ -17,12 +17,6 @@ export class ChatRoomComponent implements OnInit {
   isLoggedIn;
 
   constructor(private store: Store<fromApp.AppState>, private cookieS: CookieService) { }
-
-  @HostListener('window:beforeunload') rememberChats() {
-      this.openChats$.subscribe((chats) => {
-        this.cookieS.set('openChats', JSON.stringify(chats));
-      });
-  }
 
   ngOnInit() {
     this.openChats$ = this.store.select(UserSelectors.selectOpenedChats);

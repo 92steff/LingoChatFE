@@ -2,7 +2,7 @@ import { User } from '../models/user.model';
 import * as UserActions from './user.actions';
 
 export interface State {
-    friends: any[],
+    friends: User[],
     openedChats: User[]
 }
 
