@@ -2,8 +2,11 @@
 
 <div class="userList">
   <div class="userItem" *ngFor="let friend of friendsArr | async" (click)="openChat(friend)">
-    <app-user-head
-    [user]="friend"
-    [parent]="'friendList'"></app-user-head>
+    <app-user-head [user]="friend">
+      <div>
+        <span class="online"></span>
+        <span class="offline"></span>
+      </div>
+    </app-user-head>
   </div>
 </div>

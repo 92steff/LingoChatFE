@@ -1,7 +1,7 @@
 <div class="chatContainer">
     <div class="chatUnitHeader">
         <app-user-head [user]="userData">
-            <div *ngIf="isFriend && parent === 'chatUnit'">
+            <div>
                 <a (click)="exitChat()" class="close" aria-label="Close">&times;</a>
             </div>
         </app-user-head>

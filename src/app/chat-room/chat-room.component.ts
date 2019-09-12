@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import * as fromApp from '../store/app.reducers';
 import * as UserSelectors from '../user/user.selectors';
 
@@ -16,7 +15,7 @@ export class ChatRoomComponent implements OnInit {
   openChats$: Observable<User[]>;
   isLoggedIn;
 
-  constructor(private store: Store<fromApp.AppState>, private cookieS: CookieService) { }
+  constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
     this.openChats$ = this.store.select(UserSelectors.selectOpenedChats);

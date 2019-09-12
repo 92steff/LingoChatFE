@@ -26,8 +26,4 @@ export class UserHeadComponent implements OnInit {
     }
   }
 
-  exitChat() {
-    this.store.dispatch(new UserActions.CloseChat(this.user.id));
-  }
-
 }
