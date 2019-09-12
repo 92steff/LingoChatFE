@@ -30,21 +30,24 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit() {
     this.loggedUser$ = this.store.select(authSelectors.selectLoggedUser);
-    document.addEventListener('click', (event) => {
-      let target = <HTMLSelectElement> event.target;
-      const searchArea = document.getElementById('searchArea');
-      if (!searchArea.contains(target)) this.searchUsers = '';
-    })
+    document.addEventListener('click', this.clickAway, true);
   }
 
   checkFriendship(userID: string) {
     return this.userS.isFriend(userID);
+  }
+  
+  clickAway = (event: MouseEvent) => {
+    let target = <HTMLSelectElement> event.target;
+    const searchArea = document.getElementById('searchArea');
+    if (!searchArea.contains(target)) this.searchUsers = '';
   }
 
   logout() {
     this.store.dispatch(new AuthActions.Logout());
     this.authS.logout();
     this.router.navigate(['/']);
+    document.removeEventListener('click', this.clickAway, true);
   }
-  
+
 }

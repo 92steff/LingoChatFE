@@ -35,7 +35,7 @@ export class AuthEffects {
                         return from([]);
                     }),
 
-                    finalize(() => { this.router.navigate(['/']) })
+                    finalize(() => { this.router.navigate(['chat-room']) })
                 );
         })
     );
@@ -63,7 +63,7 @@ export class AuthEffects {
                         return from([]);
                     }),
 
-                    finalize(() => { this.router.navigate(['/']) })
+                    finalize(() => { this.router.navigate(['chat-room']) })
                 );
         })
     );
