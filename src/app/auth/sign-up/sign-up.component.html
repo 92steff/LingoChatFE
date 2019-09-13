@@ -46,13 +46,20 @@
         <div class="input-group-prepend">
           <span class="input-group-text">Re-enter:</span>
         </div>
-        <input type="passwod" class="form-control" formControlName="rePassword">
+        <input type="password" class="form-control" formControlName="rePassword">
       </div>
 
       <button type="submit" class="btn btn-secondary form-control">Sign up</button>
 
     </form>
 
+
+      <div class="spinner-wrapper">
+        <ngx-ui-loader
+          [loaderId]="'signupLoader'"
+        ></ngx-ui-loader>
+      </div>
+    
   </div>
 
 </div>

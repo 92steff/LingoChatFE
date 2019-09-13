@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthResponse } from '../../models/authResponse.model';
 import { ToastService } from 'src/app/services/toast.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 import * as AuthActions from './auth.actions';
 import * as UserActions from '../../user/user.actions';
 
@@ -35,7 +36,10 @@ export class AuthEffects {
                         return from([]);
                     }),
 
-                    finalize(() => { this.router.navigate(['chat-room']) })
+                    finalize(() => {
+                        this.loader.stopLoader('signupLoader');
+                        this.router.navigate(['chat-room'])
+                    })
                 );
         })
     );
@@ -63,12 +67,19 @@ export class AuthEffects {
                         return from([]);
                     }),
 
-                    finalize(() => { this.router.navigate(['chat-room']) })
+                    finalize(() => { 
+                        this.loader.stopLoader('loginLoader');
+                        this.router.navigate(['chat-room']) })
                 );
         })
     );
 
-    constructor(private actions$: Actions, private router: Router, private authService: AuthService, private cookieS: CookieService, private ts: ToastService) { }
+    constructor(private actions$: Actions,
+         private router: Router, 
+         private authService: AuthService,
+         private cookieS: CookieService, 
+         private ts: ToastService, 
+         private loader: NgxUiLoaderService) { }
 
     extractUser(res: AuthResponse) {
         const helper = new JwtHelperService();

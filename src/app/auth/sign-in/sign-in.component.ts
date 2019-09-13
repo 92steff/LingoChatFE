@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ToastService } from 'src/app/services/toast.service';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 import * as fromApp from '../../store/app.reducers';
 import * as AuthActions from '../store/auth.actions';
@@ -12,11 +13,13 @@ import * as authSelectors from '../store/auth.selectors';
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.less']
 })
+
+
 export class SignInComponent implements OnInit {
   signInForm:FormGroup;
   error$;
 
-  constructor(private fb:FormBuilder, private store:Store<fromApp.AppState>, private ts:ToastService) {
+  constructor(private fb:FormBuilder, private store:Store<fromApp.AppState>, private ts:ToastService, private loader: NgxUiLoaderService) {
     this.signInForm = this.fb.group({
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.required]
@@ -29,6 +32,7 @@ export class SignInComponent implements OnInit {
 
   login(form:FormGroup) {
     if (form.valid) {
+      this.loader.startLoader('loginLoader');
       this.store.dispatch(new AuthActions.TryLogin(form.value));
     } else {
       this.defineErrMsg(form);

@@ -7,6 +7,7 @@ import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as UserSelectors from './user.selectors';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {

@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { ToastService } from 'src/app/services/toast.service';
 import { Observable } from 'rxjs';
+import { NgxUiLoaderService } from 'ngx-ui-loader';
 
 import * as fromApp from '../../store/app.reducers';
 import * as AuthActions from '../store/auth.actions';
@@ -17,7 +18,7 @@ export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
   error$:Observable<string>;
 
-  constructor(private fb: FormBuilder, private store: Store<fromApp.AppState>, private ts:ToastService) {
+  constructor(private fb: FormBuilder, private store: Store<fromApp.AppState>, private ts:ToastService, private loader: NgxUiLoaderService) {
     this.signUpForm = this.fb.group({
       firstName: [null, Validators.required],
       lastName: [null, Validators.required],
@@ -51,6 +52,7 @@ export class SignUpComponent implements OnInit {
 
   submitForm(signUpForm: FormGroup) {
     if (signUpForm.valid) {
+      this.loader.startLoader('signupLoader');
       this.store.dispatch(new AuthActions.TrySignup(signUpForm.value));
     } else {
       this.defineErrMsg(signUpForm);

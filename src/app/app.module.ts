@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
-import { NgModule } from '@angular/core';
+import { NgModule, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
@@ -29,13 +29,21 @@ import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './user/user.service';
 import { FilterPipe } from './pipes/filter.pipe';
 import { UserEffects } from './user/user.effects';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools'
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from  'ngx-ui-loader';
 
 export function getToken():string {
     let cookieS:CookieService;
     const data = cookieS.get('userData');
     return data['token'];
 }
+
+const ngxUiLoaderConfig: NgxUiLoaderConfig = {
+  fgsType: SPINNER.ballSpinClockwise,
+  fgsSize: 35,
+  fgsColor: '#333',
+  hasProgressBar: false
+};
 
 @NgModule({
   declarations: [
@@ -70,7 +78,8 @@ export function getToken():string {
         tokenGetter: getToken,
         whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/"]
       }
-    })
+    }),
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
   ],
   providers: [
     ToastService,
@@ -79,6 +88,7 @@ export function getToken():string {
     CookieService,
     UserService
   ],
+  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
