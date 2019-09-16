@@ -23,12 +23,5 @@ export class FriendListComponent implements OnInit {
 
   openChat(friend:User) {
     this.store.dispatch(new UserActions.OpenChat(friend));
-    if (this.cookieS.check('openChats')) {
-      const chats: User[] = JSON.parse(this.cookieS.get('openChats'));
-      chats.push(friend);
-    }
-    else {
-      this.cookieS.set('openChats', JSON.stringify([friend]));
-    }
   }
 }
