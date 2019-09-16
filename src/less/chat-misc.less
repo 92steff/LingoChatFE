@@ -1,3 +1,9 @@
+@import './variables.less';
+
+.headContent {
+    min-width: 0;
+}
+
 .chatHeadImg {
     width: 40px;
     height:40px;
@@ -7,9 +13,12 @@
 }
 
 .chatHeadName {
-    float:left;
     margin-left:12px;
     height:40px;
     line-height: 40px;
     color: black;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    padding: 0 @paddings[md];
 }
