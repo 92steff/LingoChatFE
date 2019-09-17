@@ -1,6 +1,6 @@
 <header>
   <div class="logo-wrapper">
-    <h2>LingoChat</h2>
+    <h2><a routerLink="/">LingoChat</a></h2>
   </div>
   <div class="flex-fix">
     <div class="search-wrapper" id="searchArea">
@@ -10,7 +10,7 @@
           <li>
             <app-user-head [user]="user">
               <div class="float-right" *ngIf="!checkFriendship(user.id)">
-                <button type="button" class="btn btn-info float-right" (click)="addFriend()">Add Friend</button>
+                <button type="button" class="btn btn-info float-right" (click)="addFriend(user)">Add Friend</button>
               </div>
             </app-user-head>
           </li>
@@ -19,7 +19,7 @@
     </div>
     <nav class="user-nav">
       <div class="profile-link">
-        <a routerLink="#">{{loggedUser$ | async}}</a>
+        <a routerLink="/user-profile">{{loggedUser$ | async}}</a>
       </div>
       <div class="logout">
         <button type="button" (click)="logout()" class="btn btn-danger">Logout</button>

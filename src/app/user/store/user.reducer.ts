@@ -1,4 +1,4 @@
-import { User } from '../models/user.model';
+import { User } from '../../models/user.model';
 import * as UserActions from './user.actions';
 
 export interface State {
@@ -25,6 +25,13 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 friends: state.friends,
                 openedChats: updatedChats
             };
+        case UserActions.UPDATE_FRIENDS:
+            const updatedFriends = [...state.friends];
+            updatedFriends.push(action.payload);
+            return {
+                openedChats: state.openedChats,
+                friends: updatedFriends
+            }
         case UserActions.RETRIEVE_CHATS:
             return {
                 friends: state.friends,

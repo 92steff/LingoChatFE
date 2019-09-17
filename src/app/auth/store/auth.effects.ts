@@ -10,7 +10,7 @@ import { AuthResponse } from '../../models/authResponse.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import * as AuthActions from './auth.actions';
-import * as UserActions from '../../user/user.actions';
+import * as UserActions from '../../user/store/user.actions';
 
 @Injectable()
 export class AuthEffects {

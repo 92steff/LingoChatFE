@@ -1,5 +1,5 @@
-import * as fromApp from '../store/app.reducers';
 import { createSelector } from '@ngrx/store';
+import * as fromApp from '../../store/app.reducers';
 
 export const UserState = (state:fromApp.AppState) => state.user
 

@@ -4,8 +4,8 @@ import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import * as fromApp from '../../store/app.reducers';
-import * as UserActions from '../../user/user.actions';
-import * as UserSelectors from '../../user/user.selectors';
+import * as UserActions from '../../user/store/user.actions';
+import * as UserSelectors from '../../user/store/user.selectors';
 
 @Component({
   selector: 'app-friend-list',

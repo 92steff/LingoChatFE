@@ -18,7 +18,7 @@ import { ChatUnitComponent } from './chat-room/chat-unit/chat-unit.component';
 import { ChatFeedComponent } from './chat-room/chat-feed/chat-feed.component';
 import { ChatFormComponent } from './chat-room/chat-form/chat-form.component';
 import { MessageComponent } from './chat-room/message/message.component';
-import { UserHeadComponent } from './chat-room/user-head/user-head.component';
+import { UserHeadComponent } from './shared/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
 import { AuthEffects } from './auth/store/auth.effects';
 import { ToastService } from './services/toast.service';
@@ -28,9 +28,10 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { UserService } from './user/user.service';
 import { FilterPipe } from './pipes/filter.pipe';
-import { UserEffects } from './user/user.effects';
+import { UserEffects } from './user/store/user.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from  'ngx-ui-loader';
+import { UserProfileComponent } from './user/user-profile/user-profile.component';
 
 export function getToken():string {
     let cookieS:CookieService;
@@ -59,7 +60,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     MessageComponent,
     UserHeadComponent,
     SignInComponent,
-    FilterPipe
+    FilterPipe,
+    UserProfileComponent
   ],
   imports: [
     BrowserModule,

@@ -5,8 +5,8 @@ import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducers';
-import * as UserActions from './user.actions';
-import * as UserSelectors from './user.selectors';
+import * as UserActions from './store/user.actions';
+import * as UserSelectors from './store/user.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
@@ -22,6 +22,12 @@ export class UserService {
       this.friends = this.cookieS = JSON.parse(this.cookieS.get('userFriends'));
       this.store.dispatch(new UserActions.SetFriends(this.friends));
     }
+  }
+
+  addFriend(userID:string, friendID:string) {
+    return this.http.post(environment.apiEndpoint + 'users/' + userID + '/befriend/' + friendID, {}, {
+      observe: 'response'
+    });
   }
 
   getUsers() {

@@ -3,7 +3,7 @@ import { User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/user/user.service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
-import * as UserActions from '../../user/user.actions';
+import * as UserActions from '../../user/store/user.actions';
 
 @Component({
   selector: 'app-chat-unit',

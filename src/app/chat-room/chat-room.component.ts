@@ -2,9 +2,9 @@ import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { Store } from '@ngrx/store';
-import * as fromApp from '../store/app.reducers';
-import * as UserSelectors from '../user/user.selectors';
 import { CookieService } from 'ngx-cookie-service';
+import * as fromApp from '../store/app.reducers';
+import * as UserSelectors from '../user/store/user.selectors';
 
 @Component({
   selector: 'app-chat-room',

@@ -3,10 +3,12 @@ import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs';
+import { User } from '../models/user.model';
 import { UserService } from '../user/user.service';
 import * as fromApp from '../store/app.reducers';
 import * as authSelectors from '../auth/store/auth.selectors';
 import * as AuthActions from '../auth/store/auth.actions';
+import * as UserActions from '../user/store/user.actions';
 
 @Component({
   selector: 'app-header',
@@ -16,7 +18,7 @@ import * as AuthActions from '../auth/store/auth.actions';
 
 export class HeaderComponent implements OnInit {
   loggedUser$: Observable<string | null>;
-  usersArr = [];
+  usersArr:User[] = [];
   searchUsers: string;
 
   constructor(private store: Store<fromApp.AppState>, 
@@ -48,6 +50,10 @@ export class HeaderComponent implements OnInit {
     this.authS.logout();
     this.router.navigate(['/']);
     document.removeEventListener('click', this.clickAway, true);
+  }
+
+  addFriend(user:User) {
+    this.store.dispatch(new UserActions.AddFriend(user));
   }
 
 }

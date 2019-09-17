@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from '../../models/user.model';
+import { User } from 'src/app/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
