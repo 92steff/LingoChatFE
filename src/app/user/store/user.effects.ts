@@ -1,16 +1,16 @@
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { switchMap, map, mergeMap, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
 import { CookieService } from 'ngx-cookie-service';
+import { from } from 'rxjs';
+import { ToastService } from 'src/app/services/toast.service';
+import { HttpResponse } from '@angular/common/http';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
-import { HttpResponse } from '@angular/common/http';
-import { pipe, throwError, from } from 'rxjs';
-import { ToastService } from 'src/app/services/toast.service';
 
 @Injectable()
 export class UserEffects {
@@ -52,8 +52,9 @@ export class UserEffects {
             return this.userS.addFriend(data.userID, data.friend.id)
                 .pipe(
                     map((res:HttpResponse<Object>) => {
-                        return new UserActions.UpdateFriends(data.friend);
-                        
+                        if (res.status === 201) {
+                            return new UserActions.UpdateFriends(data.friend);
+                        }
                     }),
                     catchError((err: Error)=> {
                         this.ts.add(err.message)
