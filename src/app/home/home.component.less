@@ -1,0 +1,36 @@
+@import "../../less/variables.less";
+
+.contentWrapper {
+    display:flex;
+    min-height: calc(100vh - 84px); // 84px === header height
+}
+
+aside {
+    flex:1;
+    background:#371851;
+    padding: @paddings[lg];
+    min-width: 300px;
+}
+
+.sidebar {
+    padding: @paddings[md];
+    overflow-y: scroll;
+    height: 100%;
+}
+
+.sidebar::-webkit-scrollbar {
+    width: 1em;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background-color: darkslategray;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 15px #201F20;
+    background-color:#424142;
+}
+
+main {
+    flex: 4;
+}
