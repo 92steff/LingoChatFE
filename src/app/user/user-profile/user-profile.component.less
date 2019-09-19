@@ -1,0 +1,50 @@
+@import '../../../less/variables.less';
+
+.profileWrapper {
+    display:flex;
+    height:100%;
+    padding: @paddings[lg];
+    background-color: lightsteelblue;
+    background-size: cover;
+}
+
+.profilePicture {
+    flex:1;
+}
+
+.profileInfo {
+    flex:2;
+}
+
+.info {
+    font-size: 1.2em;
+}
+
+.descOpt {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.btnPassCnt {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media only screen and (max-width: 1280px) {
+    .profileWrapper {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .profilePicture {
+        min-width: 50%;
+        width:50%;
+        margin: 3rem;
+    }
+
+    form > div {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+}

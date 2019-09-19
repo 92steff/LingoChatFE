@@ -1,1 +1,68 @@
-<p>user-profile works!</p>
+<div class="profileWrapper">
+  <div class="profilePicture">
+    <div class="card">
+      <img class="card-img-top" src="../../../assets/f7a121a3f7a929ffb4dbc3ae241b3b4b6eaaed1d.jpg" alt="Card image">
+      <div class="card-body">
+        <a href="#" class="btn btn-primary form-control">Upload image</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="profileInfo">
+
+    <div class="descOpt">
+      <div class="mx-5 info">
+        Personal Info:
+      </div>
+
+      <div>
+        <button type="button" class="btn btn-info mx-5" *ngIf="!isEditing" (click)="isEditing = !isEditing">Change Info</button>
+        <button type="button" class="btn btn-danger" *ngIf="isEditing" (click)="cancelEdit()">Cancel</button>
+        <button type="button" class="btn btn-info mx-5" *ngIf="isEditing" (click)="submitBtn.click()">Submit Change</button>
+      </div>
+
+    </div>
+
+    <hr class="mx-5">
+
+    <form [formGroup]="userDataForm" (ngSubmit)="changeInfo()">
+      <div class="mx-5">
+        <div *ngIf="!isEditing" class="form-control text-center">{{user.firstName}}</div>
+        <input type="text" class="form-control text-center" formControlName="firstName" *ngIf="isEditing">
+      </div>
+      <div class="m-5">
+        <div *ngIf="!isEditing" class="form-control text-center">{{user.lastName}}</div>
+        <input type="text" class="form-control text-center" formControlName="lastName" *ngIf="isEditing">
+      </div>
+      <div class="m-5">
+        <div *ngIf="!isEditing" class="form-control text-center">{{user.email}}</div>
+        <input type="text" class="form-control text-center" formControlName="email" *ngIf="isEditing">
+      </div>
+      <button type="submit" style="display: none" #submitBtn></button>
+    </form>
+
+    <form [formGroup]="passChangeForm" (ngSubmit)="changePassword()">
+      <div class="btnPassCnt">
+        <button type="submit" class="btn btn-info mx-5" *ngIf="!isPassEditing" (click)="isPassEditing = !isPassEditing">Change Password</button>
+        <button type="button" class="btn btn-danger" *ngIf="isPassEditing" (click)="cancelPassEdit()">Cancel</button>
+        <button type="submit" class="btn btn-info mx-5" *ngIf="isPassEditing" (click)="changePassword()">Submit Change</button>
+      </div>
+
+      <div class="m-5">
+        <input type="password" class="form-control text-center" formControlName="oldPassword" *ngIf="isPassEditing"
+          placeholder="Old Password">
+      </div>
+
+      <div class="m-5">
+        <input type="password" class="form-control text-center" formControlName="newPassword" *ngIf="isPassEditing"
+          placeholder="New Password">
+      </div>
+
+      <div class="m-5">
+        <input type="password" class="form-control text-center" formControlName="reNewPassword" *ngIf="isPassEditing" A
+          placeholder="Re-enter New Password">
+      </div>
+
+    </form>
+  </div>
+</div>
