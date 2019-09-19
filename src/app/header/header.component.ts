@@ -56,4 +56,8 @@ export class HeaderComponent implements OnInit {
     this.store.dispatch(new UserActions.AddFriend(user));
   }
 
+  isInChatRoom() {
+    return this.router.url === '/chat-room';
+  }
+
 }
