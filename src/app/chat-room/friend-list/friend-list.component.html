@@ -1,6 +1,11 @@
 <h5>Friend list</h5>
 
+<hr>
+
 <div class="userList">
+  <div class="infoMsg" *ngIf="!friend">
+    You don't even have friends :(
+  </div>
   <div class="userItem" *ngFor="let friend of friendsArr | async" (click)="openChat(friend)">
     <app-user-head [user]="friend">
       <div>

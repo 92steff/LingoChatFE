@@ -17,8 +17,8 @@ export class UserEffects {
     @Effect()
     getUsers = this.actions$.pipe(
         ofType(UserActions.GET_FRIENDS),
-        switchMap(() => {
-            return this.store.select(AuthSelectors.selectUserID);
+        map((action: UserActions.GetFriends) => {
+            return action.payload;
         }),
         switchMap((id: string) => {
             return this.userS.getFriends(id)
@@ -26,6 +26,9 @@ export class UserEffects {
                     map((friends: User[]) => {
                         this.cookieS.set('userFriends', JSON.stringify(friends));
                         return new UserActions.SetFriends(friends);
+                    }),
+                    catchError((err)=> {
+                        return from([]);
                     })
                 )
         })
@@ -33,8 +36,8 @@ export class UserEffects {
 
     @Effect()
     addFriend = this.actions$.pipe(
-        ofType(UserActions.ADD_FRIEND),
-        map((action: UserActions.AddFriend) => {
+        ofType(UserActions.SEND_FRIEND_REQUEST),
+        map((action: UserActions.SendFriendRequest) => {
             return action.payload;
         }),
         switchMap((user:User) => {
@@ -53,7 +56,8 @@ export class UserEffects {
                 .pipe(
                     map((res:HttpResponse<Object>) => {
                         if (res.status === 201) {
-                            return new UserActions.UpdateFriends(data.friend);
+                            return new UserActions.UpdateSentRequests(data.friend.id);
+                            // return new UserActions.UpdateFriends(data.friend);
                         }
                     }),
                     catchError((err: Error)=> {

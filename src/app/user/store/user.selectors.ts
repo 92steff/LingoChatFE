@@ -12,3 +12,13 @@ export const selectOpenedChats = createSelector(
     UserState,
     (state) => state.openedChats
 );
+
+export const selectSentRequest = createSelector(
+    UserState,
+    (state) => state.sentRequests
+);
+
+export const selectReceivedRequest = createSelector(
+    UserState,
+    (state) => state.receivedRequests
+);

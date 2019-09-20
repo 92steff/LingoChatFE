@@ -28,7 +28,7 @@ export class AuthEffects {
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
                         return [
                             new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
-                            new UserActions.GetFriends()
+                            new UserActions.GetFriends(res.userID)
                         ]
                     }),
                     catchError((err) => {
@@ -55,11 +55,12 @@ export class AuthEffects {
             return this.authService.login(b64)
                 .pipe(
                     mergeMap((res: AuthResponse) => { 
+                        console.log(res);
                         const username = this.extractUser(res);
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
                         return [
                             new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
-                            new UserActions.GetFriends()
+                            new UserActions.GetFriends(res.userID)
                         ]
                     }),
                     catchError((err) => {

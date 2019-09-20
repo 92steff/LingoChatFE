@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
@@ -25,7 +25,7 @@ export class UserService {
   }
 
   addFriend(userID:string, friendID:string) {
-    return this.http.post(environment.apiEndpoint + 'users/' + userID + '/befriend/' + friendID, {}, {
+    return this.http.post(environment.apiEndpoint + 'users/' + userID + '/friendships/' + friendID, {}, {
       observe: 'response'
     });
   }
@@ -35,7 +35,9 @@ export class UserService {
   }
 
   getFriends(uid) {
-    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friends');
+    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {
+      params: new HttpParams().set('status', '1') // 1 = accepted requests
+    })
   }
 
   isFriend(userID: string): boolean {

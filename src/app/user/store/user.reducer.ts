@@ -3,44 +3,55 @@ import * as UserActions from './user.actions';
 
 export interface State {
     friends: User[],
-    openedChats: User[]
+    openedChats: User[],
+    sentRequests: string[],
+    receivedRequests: string[]
 }
 
 export const initialState: State = {
     friends: [],
-    openedChats: []
+    openedChats: [],
+    sentRequests: [],
+    receivedRequests: []
 }
 
 export function userReducer(state = initialState, action: UserActions.UserActions) {
     switch (action.type) {
         case UserActions.SET_FRIENDS:
             return {
-                openedChats: state.openedChats,
+                ...state,
                 friends: action.payload
             };
         case UserActions.OPEN_CHAT:
             const updatedChats = [...state.openedChats];
             updatedChats.push(action.payload);
             return {
-                friends: state.friends,
+                ...state,
                 openedChats: updatedChats
+            };
+        case UserActions.UPDATE_SENT_REQUESTS:
+            const updatedSentRequests = [...state.sentRequests];
+            updatedSentRequests.push(action.payload);
+            return {
+                ...state,
+                sentRequests: updatedSentRequests
             };
         case UserActions.UPDATE_FRIENDS:
             const updatedFriends = [...state.friends];
             updatedFriends.push(action.payload);
             return {
-                openedChats: state.openedChats,
+                ...state,
                 friends: updatedFriends
             }
         case UserActions.RETRIEVE_CHATS:
             return {
-                friends: state.friends,
+                ...state,
                 openedChats: [...action.payload]
             };
         case UserActions.CLOSE_CHAT:
             const filterdArr = state.openedChats.filter(friend => friend.id !== action.payload);
             return {
-                friends: state.friends,
+                ...state,
                 openedChats: filterdArr
             }
         default: return state;
