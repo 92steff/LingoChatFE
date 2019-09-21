@@ -68,6 +68,17 @@ export class UserEffects {
         })
     )
 
+    @Effect()
+    createChat = this.actions$.pipe(
+        ofType(UserActions.CREATE_CHAT),
+        map((action: UserActions.CreateChat) => {
+            return action.payload;
+        }),
+        switchMap((friendID: string) => {
+            return this.userS.getChatMessages(friendID)
+        })
+    )
+
     constructor(private actions$: Actions, 
         private store: Store<fromApp.AppState>, 
         private userS: UserService, 

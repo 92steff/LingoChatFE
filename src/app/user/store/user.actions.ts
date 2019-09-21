@@ -6,6 +6,7 @@ export const GET_FRIENDS = 'GET_FRIENDS';
 export const SET_FRIENDS = 'SET_FRIENDS';
 export const UPDATE_SENT_REQUESTS = 'UPDATE_PENDING_REQUESTS';
 export const UPDATE_FRIENDS = 'UPDATE_FRIENDS';
+export const CREATE_CHAT = 'CREATE_CHAT';
 export const OPEN_CHAT = 'OPEN_CHAT';
 export const RETRIEVE_CHATS = 'RETRIEVE_CHATS';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
@@ -40,6 +41,12 @@ export class UpdateFriends implements Action {
     constructor(public payload: User) {}
 }
 
+export class CreateChat implements Action {
+    readonly type = CREATE_CHAT;
+
+    constructor(public payload: string ) {}
+}
+
 export class OpenChat implements Action {
     readonly type = OPEN_CHAT;
 
@@ -63,6 +70,7 @@ export type UserActions = SendFriendRequest
     |   SetFriends
     |   UpdateSentRequests
     |   UpdateFriends
+    |   CreateChat
     |   OpenChat
     |   RetrieveChats
     |   CloseChat;

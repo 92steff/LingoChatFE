@@ -1,20 +1,36 @@
 @import './chat-misc.less';
 @import '~bootstrap/dist/css/bootstrap.min.css';
 
+@font-face {
+    font-family: roboto;
+    src: url('../assets/fonts/Roboto-Regular.ttf');
+}
+
+@font-face {
+    font-family: lato;
+    src: url('../assets//fonts/Lato-Regular.ttf');
+}
+
 * {
     box-sizing: border-box;
     margin:0;
     padding:0;
     border:0;
+    font-family: 'lato', 'roboto';
 }
 
 body {
     width:100%;
     min-height:100%;
+    font-size: 18px;
+    background: linear-gradient(to right, #8fd9e5, #828ada);
 }
 
-a {
+a,
+a:visited,
+a:hover {
     text-decoration: none;
+    color:inherit;
     cursor: pointer;
 }
 
@@ -28,4 +44,13 @@ ul {
 
 .spinner-wrapper {
     position: relative;
+}
+
+input, input:focus {
+    background: rgba(0, 0, 0, 0.2) !important;
+    color:#eee !important;
+  }
+  
+::-webkit-input-placeholder {
+    color: #c0c0c0 !important;
 }

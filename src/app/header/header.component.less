@@ -5,7 +5,7 @@ header {
   align-items: center;
   justify-content: space-between;
   height: 84px;
-  background: silver;
+  background: rgba(0, 0, 0, 0.3);
 }
 
 .flex-fix {
@@ -23,6 +23,12 @@ header {
 
 h2 {
   color: darkcyan;
+  background: linear-gradient(#232323, #e4cb9d, #88d40e, #a13434, #232323);
+  background: -webkit-linear-gradient(#232323, #e4cb9d, #88d40e, #a13434, #232323);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 2px #3a3e5c;
 }
 
 .search-wrapper {
@@ -34,7 +40,7 @@ h2 {
 .search-results {
   position: absolute;
   width: 100%;
-  background: #c0c0c0;
+  background: #4e6f7e;
   z-index: 1;
 }
 
@@ -45,7 +51,7 @@ ul {
 li {
   display: flex;
   padding: @paddings[md];
-  background: wheat;
+  background: rgba(0,0,0,0.1);
   cursor: pointer;
 }
 

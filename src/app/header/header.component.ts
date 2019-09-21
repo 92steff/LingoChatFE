@@ -5,12 +5,12 @@ import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { UserService } from '../user/user.service';
+import { take } from 'rxjs/operators';
 import * as fromApp from '../store/app.reducers';
 import * as authSelectors from '../auth/store/auth.selectors';
 import * as UserSelectors from '../user/store/user.selectors';
 import * as AuthActions from '../auth/store/auth.actions';
 import * as UserActions from '../user/store/user.actions';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-header',
@@ -55,11 +55,6 @@ export class HeaderComponent implements OnInit {
     let target = <HTMLSelectElement> event.target;
     const searchArea = document.getElementById('searchArea');
     if (!searchArea.contains(target)) this.searchUsers = '';
-
-    this.store.select(UserSelectors.selectSentRequest)
-      .subscribe((r)=> {
-        console.log(r);
-      })
   }
 
   logout() {
