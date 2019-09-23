@@ -3,7 +3,6 @@ import { User } from 'src/app/models/user.model';
 import { CookieService } from 'ngx-cookie-service';
 import { Store } from '@ngrx/store';
 import * as fromApp from '../../store/app.reducers';
-import * as UserActions from '../../user/store/user.actions';
 
 @Component({
   selector: 'app-user-head',

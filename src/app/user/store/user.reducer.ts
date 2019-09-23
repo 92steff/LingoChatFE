@@ -31,7 +31,11 @@ export function userReducer(state = initialState, action: UserActions.UserAction
             };
         case UserActions.UPDATE_SENT_REQUESTS:
             const updatedSentRequests = [...state.sentRequests];
-            updatedSentRequests.push(action.payload);
+            if (Array.isArray(action.payload)) {
+                updatedSentRequests.push(...action.payload);
+            } else {
+                updatedSentRequests.push(action.payload);
+            }
             return {
                 ...state,
                 sentRequests: updatedSentRequests

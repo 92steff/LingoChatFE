@@ -66,6 +66,7 @@ export class HeaderComponent implements OnInit {
 
   addFriend(user:User) {
     this.store.dispatch(new UserActions.SendFriendRequest(user));
+    this.store.dispatch(new UserActions.UpdateSentRequests(user.id));
   }
 
   isInChatRoom() {

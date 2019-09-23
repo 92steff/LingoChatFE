@@ -14,6 +14,7 @@ export class UserService {
   openChats: [];
   friends: User[];
   myId: string;
+  sentRequests: string[] | string;
 
   constructor(private http: HttpClient, private cookieS: CookieService, private store: Store<fromApp.AppState>) {
     if (this.cookieS.check('openChats')) {
@@ -23,6 +24,10 @@ export class UserService {
     if (this.cookieS.check('userFriends')) {
       this.friends = this.cookieS = JSON.parse(this.cookieS.get('userFriends'));
       this.store.dispatch(new UserActions.SetFriends(this.friends));
+    }
+    if (this.cookieS.check('sentRequests')) {
+      this.sentRequests = this.cookieS = JSON.parse(this.cookieS.get('sentRequests'));
+      this.store.dispatch(new UserActions.UpdateSentRequests(this.sentRequests));
     }
     store.select(AuthSelectors.selectUserID)
       .subscribe((id:string) => {

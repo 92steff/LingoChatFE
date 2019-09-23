@@ -10,12 +10,9 @@
           <li>
             <app-user-head [user]="user">
               <div class="float-right" *ngIf="!checkFriendship(user.id)">
-                <button type="button" class="btn btn-info" (click)="addFriend(user)">Add Friend</button>
-                <div class="btn btn-secondary" *ngIf="isRequestPending(user.id)">Request sent</div>
+                <button type="button" class="btn btn-info" *ngIf="!isRequestPending(user.id)" (click)="addFriend(user)">Add Friend</button>
+                <div class="btn btn-secondary" *ngIf="isRequestPending(user.id)">Request sent</div> 
               </div>
-              <!-- <div class="float-right" *ngIf="!checkFriendship(user.id)">
-                <div class="btn btn-primary">Request sent</div>
-              </div> -->
             </app-user-head>
           </li>
         </ul>

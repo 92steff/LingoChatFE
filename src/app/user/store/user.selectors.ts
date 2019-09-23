@@ -22,3 +22,8 @@ export const selectReceivedRequest = createSelector(
     UserState,
     (state) => state.receivedRequests
 );
+
+export const selectUserState = createSelector(
+    UserState,
+    (state) => state
+)

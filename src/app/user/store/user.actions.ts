@@ -32,7 +32,7 @@ export class SetFriends implements Action {
 export class UpdateSentRequests {
     readonly type = UPDATE_SENT_REQUESTS;
 
-    constructor(public payload: string) {}
+    constructor(public payload: string | string[]) {}
 }
 
 export class UpdateFriends implements Action {
