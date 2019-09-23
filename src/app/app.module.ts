@@ -32,6 +32,8 @@ import { UserEffects } from './user/store/user.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from  'ngx-ui-loader';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
 export function getToken():string {
     let cookieS:CookieService;
@@ -81,7 +83,9 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
         whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/"]
       }
     }),
-    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig)
+    FontAwesomeModule,
+    NgxUiLoaderModule.forRoot(ngxUiLoaderConfig),
+    BsDropdownModule.forRoot()
   ],
   providers: [
     ToastService,

@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { UserService } from '../user/user.service';
 import { take } from 'rxjs/operators';
+import { faBell } from '@fortawesome/free-solid-svg-icons';
 import * as fromApp from '../store/app.reducers';
 import * as authSelectors from '../auth/store/auth.selectors';
 import * as UserSelectors from '../user/store/user.selectors';
@@ -22,6 +23,9 @@ export class HeaderComponent implements OnInit {
   loggedUser$: Observable<string | null>;
   usersArr: User[] = [];
   searchUsers: string;
+  isNtfOpen: boolean = false;
+  faBell = faBell;
+  friendRequests: Observable<Object>;
 
   constructor(private store: Store<fromApp.AppState>, 
     private authS: AuthService, 
@@ -35,6 +39,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.loggedUser$ = this.store.select(authSelectors.selectLoggedUser);
     document.addEventListener('click', this.clickAway, true);
+    this.friendRequests = this.userS.getFriendRequests();
   }
 
   checkFriendship(userID: string) {
@@ -42,7 +47,7 @@ export class HeaderComponent implements OnInit {
   }
 
   isRequestPending(id:string) {
-    let res;
+    let res:boolean;
     this.store.select(UserSelectors.selectSentRequest)
       .pipe(take(1))
       .subscribe((requests: string[]) => {

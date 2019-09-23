@@ -46,9 +46,13 @@ export class UserService {
   }
 
   getFriends(uid) {
-    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {
-      params: new HttpParams().set('status', '1') // 1 = accepted requests
-    })
+    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {})
+  }
+
+  getFriendRequests() {
+    return this.http.get(environment.apiEndpoint + 'users/' + this.myId + '/friendships/', {
+      params: new HttpParams().set('status', '0')
+    }) 
   }
 
   getChatMessages(friendID:string) {

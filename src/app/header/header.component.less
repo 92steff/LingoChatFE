@@ -40,7 +40,7 @@ h2 {
 .search-results {
   position: absolute;
   width: 100%;
-  background: #4e6f7e;
+  background: @dropdown-color;
   z-index: 1;
 }
 
@@ -50,9 +50,19 @@ ul {
 
 li {
   display: flex;
+  flex-direction: column;
   padding: @paddings[md];
-  background: rgba(0,0,0,0.1);
+  border-bottom: 1px solid #56618f;
   cursor: pointer;
+  margin-bottom: 2px;
+}
+
+li:last-child {
+  border-bottom: none;
+}
+
+li > div > .chatHeadImg {
+  margin-right: -10px;
 }
 
 .user-nav {
@@ -63,12 +73,52 @@ li {
 }
 
 .logout,
-.profile-link {
+.profile-link,
+.notifications {
   padding: @paddings[sm];
+  margin-right: 24px;
+  cursor: pointer;
 }
 
-.logout {
-  margin: 0 24px;
+.notifications {
+  position: relative;
+  border-radius: 6px;
+  background: transparent;
+}
+
+.notificationMenu {
+  width: 450px;
+  position: absolute;
+  top:0;
+  border-radius: 6px;
+  left: -470px;
+  background: @dropdown-color;
+  box-shadow: 1px 1px 2px @dropdown-color;
+}
+
+.notificationMenu:after {
+  content: '';
+  position: absolute;
+  left: 430px;
+  top: 15px;
+  width: 0;
+  height: 0;
+  border: 20px solid transparent;
+  border-top-color: @dropdown-color;
+  z-index: -1;
+}
+
+.notfNum {
+  position: absolute;
+  color: wheat;
+  font-size: 0.7rem;
+  text-align: center;
+  left:50%;
+  top:10%;
+  background-color: #dc3545;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
 }
 
 app-user-head {

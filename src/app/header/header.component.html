@@ -19,6 +19,34 @@
       </div>
     </div>
     <nav class="user-nav">
+        <div class="notifications" (click)="isNtfOpen = !isNtfOpen">
+          <a>
+            <span *ngIf="(friendRequests | async)?.length > 0" class="notfNum">{{(friendRequests | async)?.length}}</span>
+            <fa-icon [icon]="faBell"></fa-icon>
+          </a>
+          <ul *ngIf="isNtfOpen" class="notificationMenu">
+            <li *ngFor="let user of (friendRequests | async)">
+              <div class="d-flex align-items-center">
+                <div class="chatHeadImg">
+                  <img src="../../assets/f7a121a3f7a929ffb4dbc3ae241b3b4b6eaaed1d.jpg">
+                </div>
+                <div class="chatHeadName">
+                  {{user.firstName + ' ' + user.lastName}} sent you a friend request
+                </div>
+              </div>
+              <hr>
+              <div class="d-flex justify-content-between">
+                <div>
+                  <button type="button" class="btn btn-secondary">View Profile</button>
+                </div>
+                <div>
+                  <button type="button" class="btn btn-danger">Decline</button>
+                  <button type="button" class="btn btn-success">Accept</button>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </div>
       <div class="profile-link">
         <a routerLink="/user-profile" *ngIf="isInChatRoom()">{{loggedUser$ | async}}</a>
         <a routerLink="/chat-room" *ngIf="!isInChatRoom()">Back</a>
