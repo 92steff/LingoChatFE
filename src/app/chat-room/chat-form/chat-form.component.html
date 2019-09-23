@@ -5,7 +5,9 @@
       (keydown)="onSubmit($event)"
       >
     <div class="input-group-append">
-        <button class="btn btn-light" (click)="onSend()">Send</button>
+        <button class="btn btn-light" (click)="onSend()">
+          <fa-icon [icon]="faPaperPlane"></fa-icon>
+        </button>
     </div>
 </div>
   

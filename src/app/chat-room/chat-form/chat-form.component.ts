@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-chat-form',
@@ -6,7 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./chat-form.component.less']
 })
 export class ChatFormComponent implements OnInit {
-  
+  faPaperPlane = faPaperPlane;
+
   constructor() { }
 
   ngOnInit() {
