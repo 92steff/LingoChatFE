@@ -27,7 +27,7 @@ export class UserProfileComponent implements OnInit {
     this.userDataForm = new FormGroup({
       firstName: new FormControl(this.user.firstName),
       lastName: new FormControl(this.user.lastName),
-      email: new FormControl(this.user.email)
+      email: new FormControl(this.user.username)
     })
     this.passChangeForm = new FormGroup({
       oldPassword: new FormControl(null),
@@ -48,7 +48,7 @@ export class UserProfileComponent implements OnInit {
     this.userDataForm.reset({
       firstName: this.user.firstName,
       lastName: this.user.lastName,
-      email: this.user.email
+      email: this.user.username
     })
     this.isEditing = !this.isEditing;
   }

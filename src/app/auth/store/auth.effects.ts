@@ -55,7 +55,6 @@ export class AuthEffects {
             return this.authService.login(b64)
                 .pipe(
                     mergeMap((res: AuthResponse) => { 
-                        console.log(res);
                         const username = this.extractUser(res);
                         this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
                         return [
@@ -85,7 +84,7 @@ export class AuthEffects {
     extractUser(res: AuthResponse) {
         const helper = new JwtHelperService();
         const token = helper.decodeToken(res.token);
-        const user = token['firstName'];
+        const user = token['username'];
         return user;
     };
 

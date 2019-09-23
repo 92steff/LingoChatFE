@@ -35,8 +35,8 @@
         <input type="text" class="form-control text-center" formControlName="lastName" *ngIf="isEditing">
       </div>
       <div class="m-5">
-        <div *ngIf="!isEditing" class="form-control text-center">{{user.email}}</div>
-        <input type="text" class="form-control text-center" formControlName="email" *ngIf="isEditing">
+        <div *ngIf="!isEditing" class="form-control text-center">{{user.username}}</div>
+        <input type="text" class="form-control text-center" formControlName="username" *ngIf="isEditing">
       </div>
       <button type="submit" style="display: none" #submitBtn></button>
     </form>
