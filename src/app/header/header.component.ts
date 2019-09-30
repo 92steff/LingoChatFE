@@ -39,7 +39,7 @@ export class HeaderComponent implements OnInit {
   ngOnInit() {
     this.loggedUser$ = this.store.select(authSelectors.selectLoggedUser);
     document.addEventListener('click', this.clickAway, true);
-    this.friendRequests = this.userS.getFriendRequests();
+    this.friendRequests = this.store.select(UserSelectors.selectReceivedRequest);
   }
 
   checkFriendship(userID: string) {
@@ -65,7 +65,7 @@ export class HeaderComponent implements OnInit {
   logout() {
     this.store.dispatch(new AuthActions.Logout());
     this.authS.logout();
-    this.router.navigate(['/']);
+    this.router.navigate(['/sign-in']);
     document.removeEventListener('click', this.clickAway, true);
   }
 

@@ -7,32 +7,29 @@ import { User } from '../models/user.model';
 import * as fromApp from '../store/app.reducers';
 import * as UserActions from './store/user.actions';
 import * as UserSelectors from './store/user.selectors';
-import * as AuthSelectors from '../auth/store/auth.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  openChats: [];
   friends: User[];
   myId: string;
-  sentRequests: string[] | string;
 
   constructor(private http: HttpClient, private cookieS: CookieService, private store: Store<fromApp.AppState>) {
     if (this.cookieS.check('openChats')) {
-      this.openChats = JSON.parse(this.cookieS.get('openChats'));
-      this.store.dispatch(new UserActions.RetrieveChats(this.openChats));
+      const openChats = JSON.parse(this.cookieS.get('openChats'));
+      this.store.dispatch(new UserActions.RetrieveChats(openChats));
     }
     if (this.cookieS.check('userFriends')) {
-      this.friends = this.cookieS = JSON.parse(this.cookieS.get('userFriends'));
-      this.store.dispatch(new UserActions.SetFriends(this.friends));
+      const friends = JSON.parse(this.cookieS.get('userFriends'));
+      this.store.dispatch(new UserActions.SetFriends(friends));
     }
     if (this.cookieS.check('sentRequests')) {
-      this.sentRequests = this.cookieS = JSON.parse(this.cookieS.get('sentRequests'));
-      this.store.dispatch(new UserActions.UpdateSentRequests(this.sentRequests));
+      const sentRequests = JSON.parse(this.cookieS.get('sentRequests'));
+      this.store.dispatch(new UserActions.UpdateSentRequests(sentRequests));
     }
-    store.select(AuthSelectors.selectUserID)
-      .subscribe((id:string) => {
-        this.myId = id;
-      })
+    if (this.cookieS.check('receivedRequests')) {
+      const receivedRequests = JSON.parse(this.cookieS.get('receivedRequests'));
+      this.store.dispatch(new UserActions.SetFriendRequests(receivedRequests));
+    }
   }
 
   addFriend(userID:string, friendID:string) {
@@ -45,12 +42,14 @@ export class UserService {
     return this.http.get(environment.apiEndpoint + 'users');
   }
 
-  getFriends(uid) {
-    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {})
+  getFriends(uid: string) {
+    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {
+      params: new HttpParams().set('status', '1')
+    })
   }
 
-  getFriendRequests() {
-    return this.http.get(environment.apiEndpoint + 'users/' + this.myId + '/friendships/', {
+  getFriendRequests(uid: string) {
+    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships/', {
       params: new HttpParams().set('status', '0')
     }) 
   }

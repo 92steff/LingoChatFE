@@ -27,7 +27,7 @@ export class UserEffects {
                         this.cookieS.set('userFriends', JSON.stringify(friends));
                         return new UserActions.SetFriends(friends);
                     }),
-                    catchError((err)=> {
+                    catchError((err) => {
                         return from([]);
                     })
                 )
@@ -40,7 +40,7 @@ export class UserEffects {
         map((action: UserActions.SendFriendRequest) => {
             return action.payload;
         }),
-        switchMap((user:User) => {
+        switchMap((user: User) => {
             return this.store.select(AuthSelectors.selectUserID)
                 .pipe(
                     map((uid) => {
@@ -51,17 +51,38 @@ export class UserEffects {
                     })
                 )
         }),
-        switchMap((data:{userID:string, friend:User}) => {
+        switchMap((data: { userID: string, friend: User }) => {
             return this.userS.addFriend(data.userID, data.friend.id)
                 .pipe(
-                    map((res:HttpResponse<Object>) => {
+                    map((res: HttpResponse<Object>) => {
                         if (res.status === 201) {
                             return new UserActions.UpdateSentRequests(data.friend.id);
                             // return new UserActions.UpdateFriends(data.friend);
                         }
                     }),
-                    catchError((err: Error)=> {
-                        this.ts.add(err.message)
+                    catchError((err: Error) => {
+                        this.ts.add(err.message);
+                        return from([]);
+                    })
+                )
+        })
+    )
+
+    @Effect()
+    getFriendRequests = this.actions$.pipe(
+        ofType(UserActions.GET_FRIEND_REQUESTS),
+        map((action: UserActions.GetFriendRequests) => {
+            return action.payload;
+        }),
+        switchMap((uid: string) => {
+            return this.userS.getFriendRequests(uid)
+                .pipe(
+                    map((req: User[]) => {
+                        this.cookieS.set('receivedRequests', JSON.stringify(req));
+                        return new UserActions.SetFriendRequests(req);
+                    }),
+                    catchError((err: Error) => {
+                        this.ts.add(err.message);
                         return from([]);
                     })
                 )
@@ -79,9 +100,9 @@ export class UserEffects {
         })
     )
 
-    constructor(private actions$: Actions, 
-        private store: Store<fromApp.AppState>, 
-        private userS: UserService, 
+    constructor(private actions$: Actions,
+        private store: Store<fromApp.AppState>,
+        private userS: UserService,
         private cookieS: CookieService,
         private ts: ToastService) { }
 

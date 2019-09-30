@@ -5,7 +5,7 @@ export interface State {
     friends: User[],
     openedChats: User[],
     sentRequests: string[],
-    receivedRequests: string[]
+    receivedRequests: User[]
 }
 
 export const initialState: State = {
@@ -21,6 +21,11 @@ export function userReducer(state = initialState, action: UserActions.UserAction
             return {
                 ...state,
                 friends: action.payload
+            };
+        case UserActions.SET_FRIEND_REQUESTS:
+            return {
+                ...state,
+                receivedRequests: action.payload
             };
         case UserActions.OPEN_CHAT:
             const updatedChats = [...state.openedChats];

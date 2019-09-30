@@ -16,7 +16,7 @@ import * as authSelectors from '../store/auth.selectors';
 })
 export class SignUpComponent implements OnInit {
   signUpForm: FormGroup;
-  error$:Observable<string>;
+  error$: Observable<string>;
 
   constructor(private fb: FormBuilder, private store: Store<fromApp.AppState>, private ts:ToastService, private loader: NgxUiLoaderService) {
     this.signUpForm = this.fb.group({

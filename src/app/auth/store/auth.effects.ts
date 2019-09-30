@@ -9,6 +9,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { AuthResponse } from '../../models/authResponse.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
+import { User } from 'src/app/models/user.model';
 import * as AuthActions from './auth.actions';
 import * as UserActions from '../../user/store/user.actions';
 
@@ -24,11 +25,11 @@ export class AuthEffects {
             return this.authService.signup(authData)
                 .pipe(
                     mergeMap((res: AuthResponse) => {
-                        const username = this.extractUser(res);
-                        this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
+                        const user: User = this.extractUser(res.token);
+                        this.cookieS.set('userData', JSON.stringify({ user: user.username, token: res.token }));
                         return [
-                            new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
-                            new UserActions.GetFriends(res.userID)
+                            new AuthActions.Login({ token: res.token, user: user.username, userID: user.id }),
+                            new UserActions.GetFriends(user.id)
                         ]
                     }),
                     catchError((err) => {
@@ -54,12 +55,13 @@ export class AuthEffects {
             const b64 = btoa(authData.email + ':' + authData.password);
             return this.authService.login(b64)
                 .pipe(
-                    mergeMap((res: AuthResponse) => { 
-                        const username = this.extractUser(res);
-                        this.cookieS.set('userData', JSON.stringify({ user: username, token: res.token }));
+                    mergeMap((res: AuthResponse) => {
+                        const user: User = this.extractUser(res.token);
+                        this.cookieS.set('userData', JSON.stringify({ user: user.username, token: res.token }));
                         return [
-                            new AuthActions.Login({ token: res.token, user: username, userID: res.userID }),
-                            new UserActions.GetFriends(res.userID)
+                            new AuthActions.Login({ token: res.token, user: user.username, userID: user.id }),
+                            new UserActions.GetFriends(user.id),
+                            new UserActions.GetFriendRequests(user.id)
                         ]
                     }),
                     catchError((err) => {
@@ -81,10 +83,9 @@ export class AuthEffects {
          private ts: ToastService, 
          private loader: NgxUiLoaderService) { }
 
-    extractUser(res: AuthResponse) {
+    extractUser(token: string) {
         const helper = new JwtHelperService();
-        const token = helper.decodeToken(res.token);
-        const user = token['username'];
+        const user = helper.decodeToken(token);
         return user;
     };
 
