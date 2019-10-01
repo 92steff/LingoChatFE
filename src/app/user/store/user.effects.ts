@@ -1,6 +1,6 @@
 import { Effect, Actions, ofType } from '@ngrx/effects';
 import { Injectable } from '@angular/core';
-import { switchMap, map, catchError } from 'rxjs/operators';
+import { switchMap, map, catchError, mergeMap, finalize } from 'rxjs/operators';
 import { Store } from '@ngrx/store';
 import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
@@ -11,6 +11,7 @@ import { HttpResponse } from '@angular/common/http';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
+import * as UserSelectors from './user.selectors';
 
 @Injectable()
 export class UserEffects {
@@ -37,16 +38,13 @@ export class UserEffects {
     @Effect()
     addFriend = this.actions$.pipe(
         ofType(UserActions.SEND_FRIEND_REQUEST),
-        map((action: UserActions.SendFriendRequest) => {
-            return action.payload;
-        }),
-        switchMap((user: User) => {
+        switchMap((action: UserActions.SendFriendRequest) => {
             return this.store.select(AuthSelectors.selectUserID)
                 .pipe(
-                    map((uid) => {
+                    map((uid: string) => {
                         return {
                             userID: uid,
-                            friend: user
+                            friend: action.payload
                         }
                     })
                 )
@@ -63,6 +61,55 @@ export class UserEffects {
                     catchError((err: Error) => {
                         this.ts.add(err.message);
                         return from([]);
+                    })
+                )
+        })
+    )
+
+    @Effect()
+    AcceptFriendRequest = this.actions$.pipe(
+        ofType(UserActions.ACCEPT_FRIEND_REQUEST),
+        switchMap((action: UserActions.AcceptFriendRequest) => {
+            return this.store.select(AuthSelectors.selectUserID)
+                .pipe(
+                    map((uid: string) => {
+                        return {
+                            userId: uid,
+                            friend: action.payload
+                        }
+                    })
+                )
+        }),
+        switchMap((data: {userId: string, friend: User }) => {
+            return this.userS.acceptFriendRequest(data.userId, data.friend.id)
+                .pipe(
+                    mergeMap((res: HttpResponse<Object>) => {
+                        if (res.status === 200) {
+                            if (this.cookieS.check('userFriends')) {
+                                const friends: User[] = JSON.parse(this.cookieS.get('userFriends'));
+                                friends.push(data.friend);
+                                this.cookieS.set('userFriends', JSON.stringify(friends));
+                            } else {
+                                this.cookieS.set('userFriends', JSON.stringify([data.friend]));
+                            }
+                            return [
+                                new UserActions.UpdateFriends(data.friend),
+                                new UserActions.RemoveFriendRequest(data.friend.id)
+                            ]
+                        }
+                    }),
+                    catchError((err: Error) => {
+                        this.ts.add(err.message);
+                        return from([]);
+                    }),
+                    finalize(() => {
+                        return this.store.select(UserSelectors.selectReceivedRequest)
+                            .pipe(
+                                map(requests =>  {
+                                    this.cookieS.delete('receivedRequests');
+                                    this.cookieS.set('receivedRequests', JSON.stringify(requests))
+                                })
+                            )
                     })
                 )
         })

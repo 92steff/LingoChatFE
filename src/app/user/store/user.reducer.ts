@@ -27,6 +27,12 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 ...state,
                 receivedRequests: action.payload
             };
+        case UserActions.REMOVE_FRIEND_REQUEST:
+            const updatedReceivedRequests = state.receivedRequests.filter(user => user.id !== action.payload);
+            return {
+                ...state,
+                receivedRequests: updatedReceivedRequests
+            };
         case UserActions.OPEN_CHAT:
             const updatedChats = [...state.openedChats];
             updatedChats.push(action.payload);

@@ -25,7 +25,7 @@ export class HeaderComponent implements OnInit {
   searchUsers: string;
   isNtfOpen: boolean = false;
   faBell = faBell;
-  friendRequests: Observable<Object>;
+  friendRequests: Observable<User[]>;
 
   constructor(private store: Store<fromApp.AppState>, 
     private authS: AuthService, 
@@ -60,6 +60,10 @@ export class HeaderComponent implements OnInit {
     let target = <HTMLSelectElement> event.target;
     const searchArea = document.getElementById('searchArea');
     if (!searchArea.contains(target)) this.searchUsers = '';
+  }
+
+  acceptFriendship(friend: User) {
+    this.store.dispatch(new UserActions.AcceptFriendRequest(friend));
   }
 
   logout() {

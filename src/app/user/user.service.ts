@@ -66,4 +66,12 @@ export class UserService {
     return friendsID.includes(userID);
   }
 
+  acceptFriendRequest(uid: string, friendId: string) {
+    return this.http.put(environment.apiEndpoint + 'users/' + uid + '/friendships/' + friendId, {
+     status: 1
+    }, {
+      observe: 'response'
+    })
+  }
+
 }
