@@ -3,11 +3,11 @@
 <hr>
 
 <div class="userList">
-  <div class="infoMsg" *ngIf="!friend">
+  <div class="infoMsg" *ngIf="!friendsArr">
     You don't even have friends :(
   </div>
-  <div class="userItem" *ngFor="let friend of friendsArr | async" (click)="openChat(friend)">
-    <app-user-head [user]="friend">
+  <div class="userItem" *ngFor="let friend of friendsArr | async" (click)="openChat(friend.friend)">
+    <app-user-head [user]="friend.friend">
       <div>
         <span class="online"></span>
         <span class="offline"></span>

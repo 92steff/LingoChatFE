@@ -25,6 +25,7 @@
             <fa-icon [icon]="faBell"></fa-icon>
           </a>
           <ul *ngIf="isNtfOpen" class="notificationMenu">
+            <li *ngIf="(friendRequests | async).length === 0">Your notifications are equal to freezing temperature</li>
             <li *ngFor="let user of (friendRequests | async)">
               <div class="d-flex align-items-center">
                 <div class="chatHeadImg">
