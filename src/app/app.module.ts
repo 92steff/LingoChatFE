@@ -30,15 +30,16 @@ import { UserService } from './user/user.service';
 import { FilterPipe } from './pipes/filter.pipe';
 import { UserEffects } from './user/store/user.effects';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from  'ngx-ui-loader';
+import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 
-export function getToken():string {
-    let cookieS:CookieService;
-    const data = cookieS.get('userData');
-    return data['token'];
+export function getToken(): string {
+  let cookieS: CookieService;
+  const data = cookieS.get('userData');
+  const token = data['tokens']
+  return token['accessToken'];
 }
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
@@ -80,7 +81,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     JwtModule.forRoot({
       config: {
         tokenGetter: getToken,
-        whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/"]
+        whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/api/v2"]
       }
     }),
     FontAwesomeModule,
@@ -94,7 +95,7 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     CookieService,
     UserService
   ],
-  schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

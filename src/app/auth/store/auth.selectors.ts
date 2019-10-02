@@ -25,5 +25,5 @@ export const selectUserID = createSelector(
 
 export const selectToken = createSelector(
     AuthState,
-    (state) => state.token
+    (state) => state.tokens
 )

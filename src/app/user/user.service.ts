@@ -43,7 +43,7 @@ export class UserService {
   }
 
   getFriends(uid: string) {
-    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships', {
+    return this.http.get(environment.apiEndpoint + 'friendships', {
       params: new HttpParams().set('status', '1')
     })
   }

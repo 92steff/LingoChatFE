@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiEndpoint: 'https://lingo-chat-vapor.herokuapp.com/api/'
+  apiEndpoint: 'https://lingo-chat-vapor.herokuapp.com/api/v2/'
 };
 
 /*

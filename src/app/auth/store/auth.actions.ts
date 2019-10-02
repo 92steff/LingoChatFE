@@ -1,4 +1,5 @@
 import { Action } from '@ngrx/store';
+import { AuthTokens } from 'src/app/models/authTokens.model';
 
 export const TRY_SIGNUP = 'TRY_SIGNUP';
 export const SIGNUP = 'SIGNUP';
@@ -22,7 +23,7 @@ export class TryLogin implements Action {
 export class Login implements Action {
     readonly type = LOGIN;
 
-    constructor(public payload: {token: string, user: string, userID: string}) {}
+    constructor(public payload: {tokens: AuthTokens, user: string, userID: string}) {}
 }
 
 export class Logout implements Action {
@@ -32,7 +33,7 @@ export class Logout implements Action {
 export class VerifyLoggedStatus implements Action {
     readonly type = VERIFY_LOGGED_STATUS;
 
-    constructor(public payload: {user: string, token: string, userID: string}) {}
+    constructor(public payload: {user: string, tokens: AuthTokens, userID: string}) {}
 }
 
 export type AuthActions = TrySignup 

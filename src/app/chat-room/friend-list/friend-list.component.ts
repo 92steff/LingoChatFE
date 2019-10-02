@@ -14,7 +14,7 @@ import * as UserSelectors from '../../user/store/user.selectors';
 })
 
 export class FriendListComponent implements OnInit {
-  friendsArr:Observable<User[]>
+  friendsArr: Observable<User[]>
 
   constructor(private store: Store<fromApp.AppState>, private router: Router) { }
 
@@ -22,7 +22,7 @@ export class FriendListComponent implements OnInit {
     this.friendsArr = this.store.select(UserSelectors.selectUserFriends);
   }
 
-  openChat(friend:User) {
+  openChat(friend: User) {
     this.store.dispatch(new UserActions.OpenChat(friend));
     this.router.navigate(['/chat-room']);
   }

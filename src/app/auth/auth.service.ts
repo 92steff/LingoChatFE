@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthTokens } from '../models/authTokens.model';
 import * as fromApp from '../store/app.reducers';
 import * as AuthActions from './store/auth.actions';
 
@@ -13,11 +14,15 @@ export class AuthService {
     constructor(private http: HttpClient,private store: Store<fromApp.AppState>, private cookieS: CookieService, private jwtHelper: JwtHelperService) {
         if (cookieS.check('userData')) {
             const userData = JSON.parse(cookieS.get('userData'));
-            if (userData.user && !jwtHelper.isTokenExpired(userData.token)) {
+            const re = jwtHelper.getTokenExpirationDate(userData.tokens.accessToken);
+            console.log(userData.tokens.accessToken);
+            console.log(!jwtHelper.isTokenExpired(userData.tokens.accessToken));
+            if (userData.user && !jwtHelper.isTokenExpired(userData.tokens.accessToken)) {
+                console.log(userData.tokens.accessToken)
                 const helper = new JwtHelperService();
-                const token = helper.decodeToken(userData.token);
+                const token: AuthTokens = helper.decodeToken(userData.tokens.accessToken);
                 const id = token['id'];
-                store.dispatch(new AuthActions.VerifyLoggedStatus({user: userData.user, token: userData.token, userID: id}));
+                store.dispatch(new AuthActions.VerifyLoggedStatus({user: userData.user, tokens: userData.tokens, userID: id}));
             }
         }
     }

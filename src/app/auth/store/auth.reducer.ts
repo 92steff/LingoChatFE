@@ -1,19 +1,24 @@
+import { AuthTokens } from 'src/app/models/authTokens.model';
 import * as AuthActions from './auth.actions';
 
 export interface State {
     loggedUser: string | null;
-    token: string | null;
     userID: string | null;
     authenticated: boolean;
     error: string | null;
+    tokens: AuthTokens;
 };
 
 export const initialState: State = {
     loggedUser: null,
-    token: null,
     userID: null,
     authenticated: false,
-    error: null
+    error: null,
+    tokens: {
+        accessToken: null,
+        refreshToken: null,
+        expiredAt: null
+    }
 };
 
 export function authReducer(state = initialState, action: AuthActions.AuthActions) {
@@ -22,7 +27,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
             return {
                 ...state,
                 loggedUser: action.payload.user,
-                token: action.payload.token,
+                tokens: action.payload.tokens,
                 userID: action.payload.userID,
                 authenticated: true,
                 error: null
@@ -31,7 +36,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
             return {
                 ...state,
                 loggedUser: null,
-                token: null,
+                tokens: null,
                 authenticated: false,
                 error: null
             };
@@ -40,7 +45,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 ...state,
                 loggedUser: action.payload.user,
                 userID: action.payload.userID,
-                token: action.payload.token,
+                tokens: action.payload.tokens,
                 authenticated: true
             }
         default:

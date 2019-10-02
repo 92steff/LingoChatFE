@@ -21,8 +21,8 @@ export class UserProfileComponent implements OnInit {
   constructor(private store: Store<fromApp.AppState>, private jwtS: JwtHelperService) { }
 
   ngOnInit() {
-    this.store.select(UserSelectors.selectToken).subscribe((token) => {
-      this.user = this.jwtS.decodeToken(token);
+    this.store.select(UserSelectors.selectToken).subscribe((tokens) => {
+      this.user = this.jwtS.decodeToken(tokens.accessToken);
     })
     this.userDataForm = new FormGroup({
       firstName: new FormControl(this.user.firstName),

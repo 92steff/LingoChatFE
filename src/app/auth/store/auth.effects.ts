@@ -6,7 +6,7 @@ import { map, switchMap, catchError, finalize, mergeMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
-import { AuthResponse } from '../../models/authResponse.model';
+import { AuthTokens } from '../../models/authTokens.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { User } from 'src/app/models/user.model';
@@ -24,11 +24,11 @@ export class AuthEffects {
         switchMap((authData) => {
             return this.authService.signup(authData)
                 .pipe(
-                    mergeMap((res: AuthResponse) => {
-                        const user: User = this.extractUser(res.token);
-                        this.cookieS.set('userData', JSON.stringify({ user: user.username, token: res.token }));
+                    mergeMap((tokens: AuthTokens) => {
+                        const user: User = this.extractUser(tokens.accessToken);
+                        this.cookieS.set('userData', JSON.stringify({ user: user.username, tokens: tokens }));
                         return [
-                            new AuthActions.Login({ token: res.token, user: user.username, userID: user.id }),
+                            new AuthActions.Login({ tokens: tokens, user: 'Steff', userID: user.id }), //w8ing for BE changes
                             new UserActions.GetFriends(user.id)
                         ]
                     }),
@@ -55,11 +55,11 @@ export class AuthEffects {
             const b64 = btoa(authData.email + ':' + authData.password);
             return this.authService.login(b64)
                 .pipe(
-                    mergeMap((res: AuthResponse) => {
-                        const user: User = this.extractUser(res.token);
-                        this.cookieS.set('userData', JSON.stringify({ user: user.username, token: res.token }));
+                    mergeMap((tokens: AuthTokens) => {
+                        const user: User = this.extractUser(tokens.accessToken);
+                        this.cookieS.set('userData', JSON.stringify({ user: user.username, tokens: tokens }));
                         return [
-                            new AuthActions.Login({ token: res.token, user: user.username, userID: user.id }),
+                            new AuthActions.Login({ tokens: tokens, user: 'Steff', userID: user.id}), //w8ing for BE changes
                             new UserActions.GetFriends(user.id),
                             new UserActions.GetFriendRequests(user.id)
                         ]
