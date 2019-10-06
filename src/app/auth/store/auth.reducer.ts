@@ -26,7 +26,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
         case AuthActions.LOGIN:
             return {
                 ...state,
-                loggedUser: action.payload.user,
+                loggedUser: action.payload.username,
                 tokens: action.payload.tokens,
                 userID: action.payload.userID,
                 authenticated: true,
@@ -47,6 +47,11 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
                 userID: action.payload.userID,
                 tokens: action.payload.tokens,
                 authenticated: true
+            }
+        case AuthActions.SET_LOGGED_USER:
+            return {
+                ...state,
+                loggedUser: action.payload
             }
         default:
             return state;

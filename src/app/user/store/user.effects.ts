@@ -5,7 +5,7 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
 import { CookieService } from 'ngx-cookie-service';
-import { from } from 'rxjs';
+import { from, throwError } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { HttpResponse } from '@angular/common/http';
 import * as fromApp from '../../store/app.reducers';
@@ -16,13 +16,27 @@ import * as UserSelectors from './user.selectors';
 @Injectable()
 export class UserEffects {
     @Effect()
-    getUsers = this.actions$.pipe(
-        ofType(UserActions.GET_FRIENDS),
-        map((action: UserActions.GetFriends) => {
+    getUser = this.actions$.pipe(
+        ofType(UserActions.GET_USER),
+        map((action: UserActions.GetUser) => {
             return action.payload;
         }),
-        switchMap((id: string) => {
-            return this.userS.getFriends(id)
+        switchMap((userID: string) => {
+            return this.userS.getUser(userID)
+                .pipe(
+                    map((user: User) => new UserActions.SetUserInfo(user)),
+                    catchError((err: Error) => {
+                        return throwError(err);
+                    })
+            )
+        })
+    )
+
+    @Effect()
+    getUsers = this.actions$.pipe(
+        ofType(UserActions.GET_FRIENDS),
+        switchMap(() => {
+            return this.userS.getFriends()
                 .pipe(
                     map((friends: User[]) => {
                         this.cookieS.set('userFriends', JSON.stringify(friends));
@@ -38,23 +52,15 @@ export class UserEffects {
     @Effect()
     addFriend = this.actions$.pipe(
         ofType(UserActions.SEND_FRIEND_REQUEST),
-        switchMap((action: UserActions.SendFriendRequest) => {
-            return this.store.select(AuthSelectors.selectUserID)
-                .pipe(
-                    map((uid: string) => {
-                        return {
-                            userID: uid,
-                            friend: action.payload
-                        }
-                    })
-                )
+        map((action: UserActions.SendFriendRequest) => {
+            return action.payload;
         }),
-        switchMap((data: { userID: string, friend: User }) => {
-            return this.userS.addFriend(data.userID, data.friend.id)
+        switchMap((friend: User ) => {
+            return this.userS.addFriend(friend.id)
                 .pipe(
                     map((res: HttpResponse<Object>) => {
                         if (res.status === 201) {
-                            return new UserActions.UpdateSentRequests(data.friend.id);
+                            return new UserActions.UpdateSentRequests(friend.id);
                             // return new UserActions.UpdateFriends(data.friend);
                         }
                     }),
@@ -118,11 +124,8 @@ export class UserEffects {
     @Effect()
     getFriendRequests = this.actions$.pipe(
         ofType(UserActions.GET_FRIEND_REQUESTS),
-        map((action: UserActions.GetFriendRequests) => {
-            return action.payload;
-        }),
-        switchMap((uid: string) => {
-            return this.userS.getFriendRequests(uid)
+        switchMap(() => {
+            return this.userS.getFriendRequests()
                 .pipe(
                     map((req: User[]) => {
                         this.cookieS.set('receivedRequests', JSON.stringify(req));

@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { User } from 'src/app/models/user.model';
-import { JwtHelperService } from '@auth0/angular-jwt';
 import { FormGroup, FormControl } from '@angular/forms';
+import { map, take } from 'rxjs/operators';
 import * as fromApp from '../../store/app.reducers';
-import * as UserSelectors from '../../auth/store/auth.selectors';
+import * as UserSelectors from '../store/user.selectors';
+import * as AuthSelectors from '../../auth/store/auth.selectors';
 
 @Component({
   selector: 'app-user-profile',
@@ -17,18 +18,24 @@ export class UserProfileComponent implements OnInit {
   passChangeForm: FormGroup;
   isEditing: boolean = false;
   isPassEditing: boolean = false;
+  isOwnProfile: boolean = false;
 
-  constructor(private store: Store<fromApp.AppState>, private jwtS: JwtHelperService) { }
+  constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    this.store.select(UserSelectors.selectToken).subscribe((tokens) => {
-      this.user = this.jwtS.decodeToken(tokens.accessToken);
-    })
+    this.store.select(UserSelectors.selectUserInfo).pipe(
+      take(1),
+      map((user: User) => this.user = user)
+    ) 
     this.userDataForm = new FormGroup({
       firstName: new FormControl(this.user.firstName),
       lastName: new FormControl(this.user.lastName),
       email: new FormControl(this.user.username)
     })
+    this.store.select(AuthSelectors.selectUserID).pipe(
+      take(1),
+      map((uid) => this.isOwnProfile = (uid === this.user.id))
+    )
     this.passChangeForm = new FormGroup({
       oldPassword: new FormControl(null),
       newPassword: new FormControl(null),

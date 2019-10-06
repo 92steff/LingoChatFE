@@ -1,6 +1,8 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user.model';
 
+export const GET_USER = 'GET_USER';
+export const SET_USER_INFO = 'SET_USER_INFO';
 export const SEND_FRIEND_REQUEST = 'SEND_FRIEND_REQUEST';
 export const GET_FRIEND_REQUESTS = 'GET_FRIEND_REQUESTS';
 export const SET_FRIEND_REQUESTS = 'SET_FRIEND_REQUESTS';
@@ -15,6 +17,18 @@ export const OPEN_CHAT = 'OPEN_CHAT';
 export const RETRIEVE_CHATS = 'RETRIEVE_CHATS';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
 
+export class GetUser implements Action {
+    readonly type = GET_USER;
+
+    constructor(public payload: string) {}
+}
+
+export class SetUserInfo implements Action {
+    readonly type = SET_USER_INFO;
+
+    constructor(public payload: User) {}
+}
+
 export class SendFriendRequest implements Action {
     readonly type = SEND_FRIEND_REQUEST;
 
@@ -23,8 +37,6 @@ export class SendFriendRequest implements Action {
 
 export class GetFriendRequests implements Action {
     readonly type = GET_FRIEND_REQUESTS;
-
-    constructor(public payload: string) {}
 }
 
 export class SetFriendRequests implements Action {
@@ -47,8 +59,6 @@ export class AcceptFriendRequest implements Action {
 
 export class GetFriends implements Action {
     readonly type = GET_FRIENDS;
-
-    constructor(public payload: string) {}
 }
 
 export class SetFriends implements Action {
@@ -93,7 +103,9 @@ export class CloseChat implements Action {
     constructor(public payload: string) {}
 }
 
-export type UserActions = SendFriendRequest
+export type UserActions = GetUser
+    |   SetUserInfo
+    |   SendFriendRequest
     |   GetFriendRequests
     |   SetFriendRequests
     |   RemoveFriendRequest

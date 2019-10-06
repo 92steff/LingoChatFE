@@ -34,13 +34,7 @@ import { NgxUiLoaderModule, NgxUiLoaderConfig, SPINNER } from 'ngx-ui-loader';
 import { UserProfileComponent } from './user/user-profile/user-profile.component';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
-
-export function getToken(): string {
-  let cookieS: CookieService;
-  const data = cookieS.get('userData');
-  const token = data['tokens']
-  return token['accessToken'];
-}
+import { AuthInterceptorService } from './auth/auth-interceptor.service';
 
 const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpinClockwise,
@@ -80,7 +74,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     NgbModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: getToken,
         whitelistedDomains: ["https://lingo-chat-vapor.herokuapp.com/api/v2"]
       }
     }),
@@ -93,7 +86,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     AuthService,
     AuthGuardService,
     CookieService,
-    UserService
+    UserService,
+    AuthInterceptorService
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   bootstrap: [AppComponent]

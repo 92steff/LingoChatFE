@@ -5,18 +5,25 @@ export interface State {
     friends: User[],
     openedChats: User[],
     sentRequests: string[],
-    receivedRequests: User[]
+    receivedRequests: User[],
+    userProfileInfo: User | null
 }
 
 export const initialState: State = {
     friends: [],
     openedChats: [],
     sentRequests: [],
-    receivedRequests: []
+    receivedRequests: [],
+    userProfileInfo: null
 }
 
 export function userReducer(state = initialState, action: UserActions.UserActions) {
     switch (action.type) {
+        case UserActions.SET_USER_INFO:
+            return {
+                ...state,
+                userProfileInfo: action.payload
+            };
         case UserActions.SET_FRIENDS:
             return {
                 ...state,

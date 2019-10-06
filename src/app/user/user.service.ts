@@ -32,8 +32,8 @@ export class UserService {
     }
   }
 
-  addFriend(userID:string, friendID:string) {
-    return this.http.post(environment.apiEndpoint + 'users/' + userID + '/friendships/' + friendID, {}, {
+  addFriend(friendID:string) {
+    return this.http.post(environment.apiEndpoint + 'friendships/' + friendID, {}, {
       observe: 'response'
     });
   }
@@ -42,14 +42,18 @@ export class UserService {
     return this.http.get(environment.apiEndpoint + 'users');
   }
 
-  getFriends(uid: string) {
+  getUser(uid: string) {
+    return this.http.get(environment.apiEndpoint + 'users/' + uid);
+  }
+
+  getFriends() {
     return this.http.get(environment.apiEndpoint + 'friendships', {
       params: new HttpParams().set('status', '1')
     })
   }
 
-  getFriendRequests(uid: string) {
-    return this.http.get(environment.apiEndpoint + 'users/' + uid + '/friendships/', {
+  getFriendRequests() {
+    return this.http.get(environment.apiEndpoint + 'friendships/', {
       params: new HttpParams().set('status', '0')
     }) 
   }

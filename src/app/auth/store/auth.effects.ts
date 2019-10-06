@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/app/auth/auth.service';
-import { map, switchMap, catchError, finalize, mergeMap } from 'rxjs/operators';
+import { map, switchMap, catchError, finalize, exhaustMap } from 'rxjs/operators';
 import { from } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthTokens } from '../../models/authTokens.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
-import { User } from 'src/app/models/user.model';
+import { DecodedAccessToken } from 'src/app/models/decodedAccessToken.model';
 import * as AuthActions from './auth.actions';
 import * as UserActions from '../../user/store/user.actions';
 
@@ -24,12 +24,13 @@ export class AuthEffects {
         switchMap((authData) => {
             return this.authService.signup(authData)
                 .pipe(
-                    mergeMap((tokens: AuthTokens) => {
-                        const user: User = this.extractUser(tokens.accessToken);
-                        this.cookieS.set('userData', JSON.stringify({ user: user.username, tokens: tokens }));
+                    exhaustMap((tokens: AuthTokens) => {
+                        const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
+                        this.cookieS.set('userData', JSON.stringify(tokens));
+                        this.cookieS.set('username', decodedToken.user.username);
                         return [
-                            new AuthActions.Login({ tokens: tokens, user: 'Steff', userID: user.id }), //w8ing for BE changes
-                            new UserActions.GetFriends(user.id)
+                            new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
+                            new UserActions.GetUser(decodedToken.user.id),
                         ]
                     }),
                     catchError((err) => {
@@ -55,38 +56,40 @@ export class AuthEffects {
             const b64 = btoa(authData.email + ':' + authData.password);
             return this.authService.login(b64)
                 .pipe(
-                    mergeMap((tokens: AuthTokens) => {
-                        const user: User = this.extractUser(tokens.accessToken);
-                        this.cookieS.set('userData', JSON.stringify({ user: user.username, tokens: tokens }));
+                    exhaustMap((tokens: AuthTokens) => {
+                        const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
+                        this.cookieS.set('tokens', JSON.stringify(tokens));
+                        this.cookieS.set('username', decodedToken.user.username);
                         return [
-                            new AuthActions.Login({ tokens: tokens, user: 'Steff', userID: user.id}), //w8ing for BE changes
-                            new UserActions.GetFriends(user.id),
-                            new UserActions.GetFriendRequests(user.id)
+                            new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
+                            new UserActions.GetUser(decodedToken.user.id),
+                            new UserActions.GetFriends(),
+                            new UserActions.GetFriendRequests()
                         ]
                     }),
                     catchError((err) => {
                         this.ts.add(err.statusText);
                         return from([]);
                     }),
-
-                    finalize(() => { 
+                    finalize(() => {
                         this.loader.stopLoader('loginLoader');
-                        this.router.navigate(['chat-room']) })
+                        this.router.navigate(['chat-room'])
+                    })
                 );
         })
     );
 
     constructor(private actions$: Actions,
-         private router: Router, 
-         private authService: AuthService,
-         private cookieS: CookieService, 
-         private ts: ToastService, 
-         private loader: NgxUiLoaderService) { }
+        private router: Router,
+        private authService: AuthService,
+        private cookieS: CookieService,
+        private ts: ToastService,
+        private loader: NgxUiLoaderService) { }
 
-    extractUser(token: string) {
+    decodeToken(token: string) {
         const helper = new JwtHelperService();
-        const user = helper.decodeToken(token);
-        return user;
+        const decodedToken = helper.decodeToken(token);
+        return decodedToken;
     };
 
 }

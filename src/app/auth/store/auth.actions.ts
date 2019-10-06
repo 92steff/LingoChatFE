@@ -7,6 +7,7 @@ export const TRY_LOGIN = 'TRY_LOGIN';
 export const LOGIN = 'LOGIN';
 export const LOGOUT = 'LOGOUT';
 export const VERIFY_LOGGED_STATUS = 'VERIFY_LOGGED_STATUS';
+export const SET_LOGGED_USER = 'SET_LOGGED_USER';
 
 export class TrySignup implements Action {
     readonly type = TRY_SIGNUP;
@@ -23,7 +24,7 @@ export class TryLogin implements Action {
 export class Login implements Action {
     readonly type = LOGIN;
 
-    constructor(public payload: {tokens: AuthTokens, user: string, userID: string}) {}
+    constructor(public payload: {tokens: AuthTokens, username: string, userID: string}) {}
 }
 
 export class Logout implements Action {
@@ -36,8 +37,15 @@ export class VerifyLoggedStatus implements Action {
     constructor(public payload: {user: string, tokens: AuthTokens, userID: string}) {}
 }
 
+export class SetLoggedUser implements Action {
+    readonly type = SET_LOGGED_USER;
+
+    constructor(public payload: string) {}
+}
+
 export type AuthActions = TrySignup 
     |   TryLogin 
     |   Login
     |   Logout
-    |   VerifyLoggedStatus;
+    |   VerifyLoggedStatus
+    |   SetLoggedUser;
