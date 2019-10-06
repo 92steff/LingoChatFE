@@ -4,30 +4,26 @@ import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import * as AuthSelectors from './store/auth.selectors';
 import * as fromApp from '../store/app.reducers';
+import { AuthTokens } from '../models/authTokens.model';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthInterceptorService implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
   constructor(private store: Store<fromApp.AppState>) { }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    let token: string;
     this.store.select(AuthSelectors.selectToken)
-      .subscribe((tokens) => {
-        token = tokens.accessToken;
-        console.log('1')
+      .subscribe((tokens: AuthTokens) => {
+        if (tokens) {
+          request = request.clone({
+            setHeaders: {
+              Authorization: `Bearer ` + tokens.accessToken
+            }
+          })
+        }
       })
-  
-  if (token) {
-    console.log('2')
-    request = request.clone({
-      setHeaders: {
-        Authorization: `Basic ` + token
-      }
-    })
-  }
 
   return next.handle(request);
 
