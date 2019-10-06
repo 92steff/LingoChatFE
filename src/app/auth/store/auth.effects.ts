@@ -30,7 +30,7 @@ export class AuthEffects {
                         this.cookieS.set('username', decodedToken.user.username);
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
-                            new UserActions.GetUser(decodedToken.user.id),
+                            new UserActions.SetUserInfo(decodedToken.user)
                         ]
                     }),
                     catchError((err) => {
@@ -62,7 +62,7 @@ export class AuthEffects {
                         this.cookieS.set('username', decodedToken.user.username);
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
-                            new UserActions.GetUser(decodedToken.user.id),
+                            new UserActions.SetUserInfo(decodedToken.user),
                             new UserActions.GetFriends(),
                             new UserActions.GetFriendRequests()
                         ]
