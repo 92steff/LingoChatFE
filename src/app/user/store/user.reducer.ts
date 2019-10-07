@@ -1,9 +1,11 @@
 import { User } from '../../models/user.model';
+import { Chat } from 'src/app/models/chat.model';
 import * as UserActions from './user.actions';
 
 export interface State {
     friends: User[],
-    openedChats: User[],
+    chats: Chat[],
+    openedChats: Chat[],
     sentRequests: string[],
     receivedRequests: User[],
     userProfileInfo: User | null
@@ -11,6 +13,7 @@ export interface State {
 
 export const initialState: State = {
     friends: [],
+    chats: [],
     openedChats: [],
     sentRequests: [],
     receivedRequests: [],
@@ -40,13 +43,6 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 ...state,
                 receivedRequests: updatedReceivedRequests
             };
-        case UserActions.OPEN_CHAT:
-            const updatedChats = [...state.openedChats];
-            updatedChats.push(action.payload);
-            return {
-                ...state,
-                openedChats: updatedChats
-            };
         case UserActions.UPDATE_SENT_REQUESTS:
             const updatedSentRequests = [...state.sentRequests];
             if (Array.isArray(action.payload)) {
@@ -64,18 +60,30 @@ export function userReducer(state = initialState, action: UserActions.UserAction
             return {
                 ...state,
                 friends: updatedFriends
-            }
+            };
+        case UserActions.SET_CHATS:
+            return {
+                ...state,
+                chats: action.payload
+            };
+        case UserActions.OPEN_CHAT:
+            const updatedChats = [...state.openedChats];
+            updatedChats.push(action.payload);
+            return {
+                ...state,
+                openedChats: updatedChats
+            };
         case UserActions.RETRIEVE_CHATS:
             return {
                 ...state,
                 openedChats: [...action.payload]
             };
-        case UserActions.CLOSE_CHAT:
-            const filterdArr = state.openedChats.filter(friend => friend.id !== action.payload);
-            return {
-                ...state,
-                openedChats: filterdArr
-            }
+        // case UserActions.CLOSE_CHAT:
+        //     const filterdArr = state.openedChats.filter(friend => friend.id !== action.payload);
+        //     return {
+        //         ...state,
+        //         openedChats: filterdArr
+        //     }
         default: return state;
     }
 }

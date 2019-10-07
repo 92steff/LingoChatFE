@@ -64,7 +64,8 @@ export class AuthEffects {
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
                             new UserActions.SetUserInfo(decodedToken.user),
                             new UserActions.GetFriends(),
-                            new UserActions.GetFriendRequests()
+                            new UserActions.GetFriendRequests(),
+                            new UserActions.GetChats()
                         ]
                     }),
                     catchError((err) => {

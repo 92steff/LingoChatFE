@@ -1,5 +1,6 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user.model';
+import { Chat } from 'src/app/models/chat.model';
 
 export const GET_USER = 'GET_USER';
 export const SET_USER_INFO = 'SET_USER_INFO';
@@ -12,6 +13,10 @@ export const GET_FRIENDS = 'GET_FRIENDS';
 export const SET_FRIENDS = 'SET_FRIENDS';
 export const UPDATE_SENT_REQUESTS = 'UPDATE_SENT_REQUESTS';
 export const UPDATE_FRIENDS = 'UPDATE_FRIENDS';
+export const GET_CHATS = 'GET_CHATS';
+export const GET_CHAT = 'GET_CHAT';
+export const UPDATE_CHAT = 'UPDATE_CHAT';
+export const SET_CHATS = 'SET_CHATS';
 export const CREATE_CHAT = 'CREATE_CHAT';
 export const OPEN_CHAT = 'OPEN_CHAT';
 export const RETRIEVE_CHATS = 'RETRIEVE_CHATS';
@@ -79,22 +84,44 @@ export class UpdateFriends implements Action {
     constructor(public payload: User) {}
 }
 
+export class GetChats implements Action {
+    readonly type = GET_CHATS;
+}
+
+export class SetChats implements Action {
+    readonly type = SET_CHATS;
+
+    constructor(public payload: Chat[]) {}
+}
+
+export class GetChat implements Action {
+    readonly type = GET_CHAT;
+
+    constructor(public payload: string) {}
+}
+
 export class CreateChat implements Action {
     readonly type = CREATE_CHAT;
 
-    constructor(public payload: string ) {}
+    constructor(public payload: User ) {}
+}
+
+export class UpdateChat implements Action {
+    readonly type = UPDATE_CHAT;
+
+    constructor(public payload: Chat) {}
 }
 
 export class OpenChat implements Action {
     readonly type = OPEN_CHAT;
 
-    constructor(public payload: User) {}
+    constructor(public payload: Chat) {}
 }
 
 export class RetrieveChats implements Action {
     readonly type = RETRIEVE_CHATS;
 
-    constructor(public payload: User[]) {}
+    constructor(public payload: Chat[]) {}
 }
 
 export class CloseChat implements Action {
@@ -114,7 +141,11 @@ export type UserActions = GetUser
     |   SetFriends
     |   UpdateSentRequests
     |   UpdateFriends
+    |   GetChats
+    |   SetChats
+    |   GetChat
     |   CreateChat
+    |   UpdateChat
     |   OpenChat
     |   RetrieveChats
     |   CloseChat;

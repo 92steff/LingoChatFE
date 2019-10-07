@@ -8,6 +8,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { from, throwError } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { HttpResponse } from '@angular/common/http';
+import { Chat } from 'src/app/models/chat.model';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
@@ -122,6 +123,46 @@ export class UserEffects {
     )
 
     @Effect()
+    getChats = this.actions$.pipe(
+        ofType(UserActions.GET_CHATS),
+        switchMap(() => {
+            return this.userS.getChats()
+                .pipe(
+                    map((chats: Chat[]) => {
+                        new UserActions.SetChats(chats);
+                    })
+                )
+        })
+    )
+
+    @Effect()
+    getChat = this.actions$.pipe(
+        ofType(UserActions.GET_CHAT),
+        map((action: UserActions.GetChat) => {
+            return action.payload;
+        }),
+        switchMap((chatId: string) => {
+            return this.userS.getChat(chatId)
+                .pipe(
+                    map((chat: Chat) => {
+                        new UserActions.OpenChat(chat);
+                    })
+                )
+        })
+    )
+
+    @Effect()
+    createChat = this.actions$.pipe(
+        ofType(UserActions.CREATE_CHAT),
+        map((action: UserActions.CreateChat) => {
+            return action.payload;
+        }),
+        switchMap((friend: User) => {
+            return this.userS.createChat(friend);
+        })
+    )
+
+    @Effect()
     getFriendRequests = this.actions$.pipe(
         ofType(UserActions.GET_FRIEND_REQUESTS),
         switchMap(() => {
@@ -136,17 +177,6 @@ export class UserEffects {
                         return from([]);
                     })
                 )
-        })
-    )
-
-    @Effect()
-    createChat = this.actions$.pipe(
-        ofType(UserActions.CREATE_CHAT),
-        map((action: UserActions.CreateChat) => {
-            return action.payload;
-        }),
-        switchMap((friendID: string) => {
-            return this.userS.getChatMessages(friendID)
         })
     )
 

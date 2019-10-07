@@ -78,4 +78,19 @@ export class UserService {
     })
   }
 
+  getChats() {
+    return this.http.get(environment.apiEndpoint + 'chats');
+  }
+
+  getChat(chatId: string) {
+    return this.http.get(environment.apiEndpoint + 'chats/' + chatId + '/messages');
+  }
+
+  createChat(friend: User) {
+    return this.http.post(environment.apiEndpoint + 'chats/' + friend.id, {
+      name: friend.firstName + friend.lastName,
+      participants: [friend]
+    });
+  }
+
 }

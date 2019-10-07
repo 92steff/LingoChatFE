@@ -32,3 +32,8 @@ export const selectUserInfo = createSelector(
     UserState,
     (state) => state.userProfileInfo
 )
+
+export const selectChats = createSelector(
+    UserState,
+    (state) => state.chats
+)

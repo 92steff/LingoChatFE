@@ -1,11 +1,11 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
-import { User } from '../models/user.model';
 import { Store, select } from '@ngrx/store';
 import { CookieService } from 'ngx-cookie-service';
+import { Chat } from '../models/chat.model';
+import { take } from 'rxjs/operators';
 import * as fromApp from '../store/app.reducers';
 import * as UserSelectors from '../user/store/user.selectors';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-chat-room',
@@ -14,7 +14,7 @@ import { take } from 'rxjs/operators';
 })
 
 export class ChatRoomComponent implements OnInit {
-  openChats$: Observable<User[]>;
+  openChats$: Observable<Chat[]>;
 
   @HostListener('window:beforeunload')
   saveOpenedChats() {
