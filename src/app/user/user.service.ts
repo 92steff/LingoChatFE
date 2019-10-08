@@ -47,7 +47,7 @@ export class UserService {
   }
 
   getFriends() {
-    return this.http.get(environment.apiEndpoint + 'friendships', {
+    return this.http.get(environment.apiEndpoint + 'friendships/', {
       params: new HttpParams().set('status', '1')
     })
   }
@@ -87,7 +87,7 @@ export class UserService {
   }
 
   createChat(friend: User) {
-    return this.http.post(environment.apiEndpoint + 'chats/' + friend.id, {
+    return this.http.post(environment.apiEndpoint + 'chats/', {
       name: friend.firstName + friend.lastName,
       participants: [friend]
     });

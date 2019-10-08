@@ -1,6 +1,7 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user.model';
 import { Chat } from 'src/app/models/chat.model';
+import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 
 export const GET_USER = 'GET_USER';
 export const SET_USER_INFO = 'SET_USER_INFO';
@@ -21,6 +22,8 @@ export const CREATE_CHAT = 'CREATE_CHAT';
 export const OPEN_CHAT = 'OPEN_CHAT';
 export const RETRIEVE_CHATS = 'RETRIEVE_CHATS';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
+export const GET_MESSAGES = 'GET_MESSAGES';
+export const POST_MESSAGE = 'POST_MESSAGE';
 
 export class GetUser implements Action {
     readonly type = GET_USER;
@@ -130,6 +133,16 @@ export class CloseChat implements Action {
     constructor(public payload: string) {}
 }
 
+export class GetMessages implements Action {
+    readonly type = GET_MESSAGES;
+}
+
+export class PostMessage implements Action {
+    readonly type = POST_MESSAGE;
+
+    constructor(public payload: Message) {}
+}
+
 export type UserActions = GetUser
     |   SetUserInfo
     |   SendFriendRequest
@@ -148,4 +161,6 @@ export type UserActions = GetUser
     |   UpdateChat
     |   OpenChat
     |   RetrieveChats
-    |   CloseChat;
+    |   CloseChat
+    |   GetMessages
+    |   PostMessage;

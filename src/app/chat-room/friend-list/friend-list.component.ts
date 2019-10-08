@@ -35,7 +35,6 @@ export class FriendListComponent implements OnInit {
         if (createdChat) this.store.dispatch(new UserActions.GetChat(createdChat.chat.id))
         else this.store.dispatch(new UserActions.CreateChat(friend))
       })
-    // if (createdChat) this.store.dispatch(new UserActions.GetChat(friend));
-    // this.router.navigate(['/chat-room']);
+    this.router.navigate(['/chat-room']);
   }
 }

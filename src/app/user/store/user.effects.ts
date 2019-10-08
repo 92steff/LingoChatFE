@@ -128,9 +128,7 @@ export class UserEffects {
         switchMap(() => {
             return this.userS.getChats()
                 .pipe(
-                    map((chats: Chat[]) => {
-                        new UserActions.SetChats(chats);
-                    })
+                    map((chats: Chat[]) => new UserActions.SetChats(chats))
                 )
         })
     )
@@ -144,9 +142,7 @@ export class UserEffects {
         switchMap((chatId: string) => {
             return this.userS.getChat(chatId)
                 .pipe(
-                    map((chat: Chat) => {
-                        new UserActions.OpenChat(chat);
-                    })
+                    map((chat: Chat) => new UserActions.OpenChat(chat))
                 )
         })
     )
@@ -158,7 +154,24 @@ export class UserEffects {
             return action.payload;
         }),
         switchMap((friend: User) => {
-            return this.userS.createChat(friend);
+            return this.userS.createChat(friend)
+                .pipe(
+                    map(() => {
+                        const newChat: Chat = {     // temporary solution, until changes on BE are made
+                            chat: {
+                                id: Math.random() * 123456789 + '',
+                                name: friend.firstName + ' ' + friend.lastName,
+                                createdAt: new Date().getTime()
+                            },
+                            participants: [friend],
+                            lastMessage: null
+                        }
+                        return new UserActions.OpenChat(newChat);
+                    }),
+                    catchError(err => {
+                       throw console.log(err);
+                    })
+                )
         })
     )
 
@@ -179,6 +192,8 @@ export class UserEffects {
                 )
         })
     )
+
+    
 
     constructor(private actions$: Actions,
         private store: Store<fromApp.AppState>,
