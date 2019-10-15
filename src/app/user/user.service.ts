@@ -15,20 +15,16 @@ export class UserService {
 
   constructor(private http: HttpClient, private cookieS: CookieService, private store: Store<fromApp.AppState>) {
     if (this.cookieS.check('openChats')) {
-      const openChats = JSON.parse(this.cookieS.get('openChats'));
-      this.store.dispatch(new UserActions.RetrieveChats(openChats));
+      this.store.dispatch(new UserActions.RetrieveChats(JSON.parse(this.cookieS.get('openChats'))));
     }
     if (this.cookieS.check('userFriends')) {
-      const friends = JSON.parse(this.cookieS.get('userFriends'));
-      this.store.dispatch(new UserActions.SetFriends(friends));
+      this.store.dispatch(new UserActions.SetFriends(JSON.parse(this.cookieS.get('userFriends'))));
     }
     if (this.cookieS.check('sentRequests')) {
-      const sentRequests = JSON.parse(this.cookieS.get('sentRequests'));
-      this.store.dispatch(new UserActions.UpdateSentRequests(sentRequests));
+      this.store.dispatch(new UserActions.UpdateSentRequests(JSON.parse(this.cookieS.get('sentRequests'))));
     }
     if (this.cookieS.check('receivedRequests')) {
-      const receivedRequests = JSON.parse(this.cookieS.get('receivedRequests'));
-      this.store.dispatch(new UserActions.SetFriendRequests(receivedRequests));
+      this.store.dispatch(new UserActions.SetFriendRequests(JSON.parse(this.cookieS.get('receivedRequests'))));
     }
   }
 
@@ -58,10 +54,6 @@ export class UserService {
     }) 
   }
 
-  getChatMessages(friendID:string) {
-    return this.http.get(environment.apiEndpoint + 'users/' + this.myId + '/chats/' + friendID);
-  }
-
   isFriend(userID: string): boolean {
     this.store.select(UserSelectors.selectUserFriends).subscribe((friendsArr) => {
       this.friends = friendsArr;
@@ -82,7 +74,7 @@ export class UserService {
     return this.http.get(environment.apiEndpoint + 'chats');
   }
 
-  getChat(chatId: string) {
+  getChatMessages(chatId: string) {
     return this.http.get(environment.apiEndpoint + 'chats/' + chatId + '/messages');
   }
 

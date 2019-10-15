@@ -14,13 +14,13 @@ export class AuthService {
     constructor(private http: HttpClient, private store: Store<fromApp.AppState>, private cookieS: CookieService, private jwtHelper: JwtHelperService) {
         if (cookieS.check('tokens')) {
             const tokens: AuthTokens = JSON.parse(cookieS.get('tokens'));
-            const currentTime = new Date().getTime();
-            const tokenExpDate = new Date(tokens.expiredAt).getTime();
-            if  (tokenExpDate > currentTime) {
+            if  (new Date(tokens.expiredAt).getTime() > new Date().getTime()) {
                 const token: AuthTokens = jwtHelper.decodeToken(tokens.accessToken);
-                const username = this.cookieS.get('username');
-                const uid = token['userID'];
-                store.dispatch(new AuthActions.VerifyLoggedStatus({user: username, tokens: tokens, userID: uid}));
+                store.dispatch(new AuthActions.VerifyLoggedStatus({
+                    user: this.cookieS.get('username'), 
+                    tokens: tokens, 
+                    userID: token['userID']
+                }));
             }
         }
     }
@@ -40,7 +40,7 @@ export class AuthService {
     }
 
     logout(): void {
-        this.cookieS.deleteAll();
+        this.cookieS.deleteAll('/');
     }
 
 }
