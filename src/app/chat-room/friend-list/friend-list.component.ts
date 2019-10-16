@@ -27,13 +27,23 @@ export class FriendListComponent implements OnInit {
   }
 
   openChat(friend: User) {
-    this.chats.pipe(take(1))
-      .subscribe((chats: Chat[]) => {
-        const createdChat: Chat = chats.find((chat) => {
-          return chat.participants.find((user) => user.id === friend.id)
-        })
-        if (createdChat) this.store.dispatch(new UserActions.GetChat(createdChat.chat.id))
-        else this.store.dispatch(new UserActions.CreateChat(friend))
+    this.store.select(UserSelectors.selectOpenedChats).pipe(
+      take(1))
+      .subscribe(chats => {
+        let isOpen;
+        if (chats) {
+          isOpen = chats.find(chat => chat.user.id === friend.id);
+        }
+        if (isOpen) return;
+        this.chats.pipe(
+          take(1))
+          .subscribe((chats: Chat[]) => {
+            const createdChat: Chat = chats.find((chat) => {
+              return chat.participants.find((user) => user.id === friend.id)
+            });
+            if (!!createdChat) this.store.dispatch(new UserActions.GetChat(createdChat))
+            else this.store.dispatch(new UserActions.CreateChat(friend))
+          })
       })
     this.router.navigate(['/chat-room']);
   }

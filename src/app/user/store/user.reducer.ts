@@ -15,7 +15,7 @@ export interface State {
 export const initialState: State = {
     friends: [],
     chats: [],
-    openedChats: null,
+    openedChats: [],
     sentRequests: [],
     receivedRequests: [],
     userProfileInfo: null
