@@ -9,6 +9,7 @@ import { from, throwError } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { HttpResponse } from '@angular/common/http';
 import { Chat } from 'src/app/models/chat.model';
+import { Message } from 'src/app/models/message.model';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
@@ -26,9 +27,7 @@ export class UserEffects {
             return this.userS.getUser(userID)
                 .pipe(
                     map((user: User) => new UserActions.SetUserInfo(user)),
-                    catchError((err: Error) => {
-                        return throwError(err);
-                    })
+                    catchError((err: Error) => throwError(err))
             )
         })
     )
@@ -43,9 +42,7 @@ export class UserEffects {
                         this.cookieS.set('userFriends', JSON.stringify(friends));
                         return new UserActions.SetFriends(friends);
                     }),
-                    catchError((err) => {
-                        return from([]);
-                    })
+                    catchError((err) => throwError(err))
                 )
         })
     )
@@ -67,7 +64,7 @@ export class UserEffects {
                     }),
                     catchError((err: Error) => {
                         this.ts.add(err.message);
-                        return from([]);
+                        return throwError(err);
                     })
                 )
         })
@@ -107,7 +104,7 @@ export class UserEffects {
                     }),
                     catchError((err: Error) => {
                         this.ts.add(err.message);
-                        return from([]);
+                        return throwError(err);
                     }),
                     finalize(() => {
                         return this.store.select(UserSelectors.selectReceivedRequest)
@@ -128,7 +125,11 @@ export class UserEffects {
         switchMap(() => {
             return this.userS.getChats()
                 .pipe(
-                    map((chats: Chat[]) => new UserActions.SetChats(chats))
+                    map((chats: Chat[]) => {
+                        console.log('?')
+                        return new UserActions.SetChats(chats)
+                    }),
+                    catchError(err => throwError(err))
                 )
         })
     )
@@ -139,10 +140,11 @@ export class UserEffects {
         map((action: UserActions.GetChat) => {
             return action.payload;
         }),
-        switchMap((chatId: string) => {
-            return this.userS.getChat(chatId)
+        switchMap((chat: Chat) => {
+            return this.userS.getChatMessages(chat.chat.id)
                 .pipe(
-                    map((chat: Chat) => new UserActions.OpenChat(chat))
+                    map((messages: Message[]) => new UserActions.OpenChat({user: chat.participants[0], messages: messages})),
+                    catchError(err => throwError(err))
                 )
         })
     )
@@ -157,23 +159,27 @@ export class UserEffects {
             return this.userS.createChat(friend)
                 .pipe(
                     map(() => {
-                        const newChat: Chat = {     // temporary solution, until changes on BE are made
-                            chat: {
-                                id: Math.random() * 123456789 + '',
-                                name: friend.firstName + ' ' + friend.lastName,
-                                createdAt: new Date().getTime()
-                            },
-                            participants: [friend],
-                            lastMessage: null
-                        }
-                        return new UserActions.OpenChat(newChat);
+                        // const newChat: Chat = {     // temporary solution, until changes on BE are made
+                        //     chat: {
+                        //         id: Math.random() * 123456789 + '',
+                        //         name: friend.firstName + ' ' + friend.lastName,
+                        //         createdAt: new Date().getTime()
+                        //     },
+                        //     participants: [friend],
+                        //     lastMessage: null
+                        // }
+                        return new UserActions.OpenChat({user: friend, messages: []});
                     }),
-                    catchError(err => {
-                       throw console.log(err);
-                    })
+                    catchError(err => throwError(err))
                 )
         })
     )
+
+    // @Effect()
+    // getMessages = this.actions$.pipe(
+    //     ofType(UserActions.GET_MESSAGES),
+
+    // )
 
     @Effect()
     getFriendRequests = this.actions$.pipe(
@@ -187,7 +193,7 @@ export class UserEffects {
                     }),
                     catchError((err: Error) => {
                         this.ts.add(err.message);
-                        return from([]);
+                        return throwError(err);
                     })
                 )
         })

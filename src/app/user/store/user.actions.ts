@@ -1,7 +1,8 @@
 import { Action } from '@ngrx/store';
 import { User } from '../../models/user.model';
 import { Chat } from 'src/app/models/chat.model';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
+import { Message } from '../../models/message.model';
+import { ChatData } from 'src/app/models/chatData.model';
 
 export const GET_USER = 'GET_USER';
 export const SET_USER_INFO = 'SET_USER_INFO';
@@ -100,7 +101,7 @@ export class SetChats implements Action {
 export class GetChat implements Action {
     readonly type = GET_CHAT;
 
-    constructor(public payload: string) {}
+    constructor(public payload: Chat) {}
 }
 
 export class CreateChat implements Action {
@@ -118,13 +119,13 @@ export class UpdateChat implements Action {
 export class OpenChat implements Action {
     readonly type = OPEN_CHAT;
 
-    constructor(public payload: Chat) {}
+    constructor(public payload: ChatData) {}
 }
 
 export class RetrieveChats implements Action {
     readonly type = RETRIEVE_CHATS;
 
-    constructor(public payload: Chat[]) {}
+    constructor(public payload: ChatData[]) {}
 }
 
 export class CloseChat implements Action {

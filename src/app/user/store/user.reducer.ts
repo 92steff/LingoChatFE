@@ -1,11 +1,12 @@
 import { User } from '../../models/user.model';
 import { Chat } from 'src/app/models/chat.model';
+import { ChatData } from 'src/app/models/chatData.model';
 import * as UserActions from './user.actions';
 
 export interface State {
     friends: User[],
     chats: Chat[],
-    openedChats: Chat[],
+    openedChats: ChatData[],
     sentRequests: string[],
     receivedRequests: User[],
     userProfileInfo: User | null
@@ -14,7 +15,7 @@ export interface State {
 export const initialState: State = {
     friends: [],
     chats: [],
-    openedChats: [],
+    openedChats: null,
     sentRequests: [],
     receivedRequests: [],
     userProfileInfo: null

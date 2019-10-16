@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 import { AuthService } from 'src/app/auth/auth.service';
 import { map, switchMap, catchError, finalize, exhaustMap } from 'rxjs/operators';
-import { from } from 'rxjs';
+import { throwError } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { CookieService } from 'ngx-cookie-service';
 import { AuthTokens } from '../../models/authTokens.model';
@@ -35,7 +35,7 @@ export class AuthEffects {
                     }),
                     catchError((err) => {
                         this.ts.add(err.statusText);
-                        return from([]);
+                        return throwError(err);
                     }),
 
                     finalize(() => {
@@ -70,7 +70,7 @@ export class AuthEffects {
                     }),
                     catchError((err) => {
                         this.ts.add(err.statusText);
-                        return from([]);
+                        return throwError(err);
                     }),
                     finalize(() => {
                         this.loader.stopLoader('loginLoader');
