@@ -15,7 +15,8 @@ export class UserService {
 
   constructor(private http: HttpClient, private cookieS: CookieService, private store: Store<fromApp.AppState>) {
     if (this.cookieS.check('openChats')) {
-      this.store.dispatch(new UserActions.RetrieveChats(JSON.parse(this.cookieS.get('openChats'))));
+      const openChats = JSON.parse(this.cookieS.get('openChats'));
+      this.store.dispatch(new UserActions.RetrieveChats(openChats));
     }
     if (this.cookieS.check('userFriends')) {
       this.store.dispatch(new UserActions.SetFriends(JSON.parse(this.cookieS.get('userFriends'))));

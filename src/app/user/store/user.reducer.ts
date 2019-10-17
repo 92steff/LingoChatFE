@@ -79,12 +79,12 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 ...state,
                 openedChats: [...action.payload]
             };
-        // case UserActions.CLOSE_CHAT:
-        //     const filterdArr = state.openedChats.filter(friend => friend.id !== action.payload);
-        //     return {
-        //         ...state,
-        //         openedChats: filterdArr
-        //     }
+        case UserActions.CLOSE_CHAT:
+            const filterdArr = state.openedChats.filter(chat => chat.user.id !== action.payload);
+            return {
+                ...state,
+                openedChats: filterdArr
+            }
         default: return state;
     }
 }

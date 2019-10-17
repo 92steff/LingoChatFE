@@ -14,6 +14,7 @@ import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
 import * as UserSelectors from './user.selectors';
+import { CustomCookieService } from 'src/app/services/customCookie.service';
 
 @Injectable()
 export class UserEffects {
@@ -126,7 +127,6 @@ export class UserEffects {
             return this.userS.getChats()
                 .pipe(
                     map((chats: Chat[]) => {
-                        console.log('?')
                         return new UserActions.SetChats(chats)
                     }),
                     catchError(err => throwError(err))
@@ -143,7 +143,10 @@ export class UserEffects {
         switchMap((chat: Chat) => {
             return this.userS.getChatMessages(chat.chat.id)
                 .pipe(
-                    map((messages: Message[]) => new UserActions.OpenChat({user: chat.participants[0], messages: messages})),
+                    map((messages: Message[]) => {
+                        this.customCS.addToOpenChats({user: chat.participants[0], messages: messages});
+                        return new UserActions.OpenChat({user: chat.participants[0], messages: messages})
+                    }),
                     catchError(err => throwError(err))
                 )
         })
@@ -159,15 +162,7 @@ export class UserEffects {
             return this.userS.createChat(friend)
                 .pipe(
                     map(() => {
-                        // const newChat: Chat = {     // temporary solution, until changes on BE are made
-                        //     chat: {
-                        //         id: Math.random() * 123456789 + '',
-                        //         name: friend.firstName + ' ' + friend.lastName,
-                        //         createdAt: new Date().getTime()
-                        //     },
-                        //     participants: [friend],
-                        //     lastMessage: null
-                        // }
+                        this.customCS.addToOpenChats({user: friend, messages: []});
                         return new UserActions.OpenChat({user: friend, messages: []});
                     }),
                     catchError(err => throwError(err))
@@ -205,6 +200,7 @@ export class UserEffects {
         private store: Store<fromApp.AppState>,
         private userS: UserService,
         private cookieS: CookieService,
-        private ts: ToastService) { }
+        private ts: ToastService,
+        private customCS: CustomCookieService) { }
 
 }

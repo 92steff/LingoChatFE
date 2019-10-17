@@ -5,11 +5,11 @@ import { AuthService } from 'src/app/auth/auth.service';
 import { map, switchMap, catchError, finalize, exhaustMap } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { CookieService } from 'ngx-cookie-service';
 import { AuthTokens } from '../../models/authTokens.model';
 import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { DecodedAccessToken } from 'src/app/models/decodedAccessToken.model';
+import { CustomCookieService } from 'src/app/services/customCookie.service';
 import * as AuthActions from './auth.actions';
 import * as UserActions from '../../user/store/user.actions';
 
@@ -26,8 +26,8 @@ export class AuthEffects {
                 .pipe(
                     exhaustMap((tokens: AuthTokens) => {
                         const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
-                        this.cookieS.set('userData', JSON.stringify(tokens));
-                        this.cookieS.set('username', decodedToken.user.username);
+                        this.customCS.username = decodedToken.user.username;
+                        this.customCS.tokens = tokens;
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
                             new UserActions.SetUserInfo(decodedToken.user)
@@ -58,8 +58,8 @@ export class AuthEffects {
                 .pipe(
                     exhaustMap((tokens: AuthTokens) => {
                         const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
-                        this.cookieS.set('tokens', JSON.stringify(tokens));
-                        this.cookieS.set('username', decodedToken.user.username);
+                        this.customCS.username = decodedToken.user.username;
+                        this.customCS.tokens = tokens;
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
                             new UserActions.SetUserInfo(decodedToken.user),
@@ -83,9 +83,9 @@ export class AuthEffects {
     constructor(private actions$: Actions,
         private router: Router,
         private authService: AuthService,
-        private cookieS: CookieService,
         private ts: ToastService,
-        private loader: NgxUiLoaderService) { }
+        private loader: NgxUiLoaderService,
+        private customCS: CustomCookieService) { }
 
     decodeToken(token: string) {
         const helper = new JwtHelperService();
