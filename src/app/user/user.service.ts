@@ -2,32 +2,17 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import { User } from '../models/user.model';
+import { take } from 'rxjs/operators';
 import * as fromApp from '../store/app.reducers';
-import * as UserActions from './store/user.actions';
 import * as UserSelectors from './store/user.selectors';
 
 @Injectable({ providedIn: 'root' })
 export class UserService {
-  friends: User[];
+  friends;
   myId: string;
 
-  constructor(private http: HttpClient, private cookieS: CookieService, private store: Store<fromApp.AppState>) {
-    if (this.cookieS.check('openChats')) {
-      const openChats = JSON.parse(this.cookieS.get('openChats'));
-      this.store.dispatch(new UserActions.RetrieveChats(openChats));
-    }
-    if (this.cookieS.check('userFriends')) {
-      this.store.dispatch(new UserActions.SetFriends(JSON.parse(this.cookieS.get('userFriends'))));
-    }
-    if (this.cookieS.check('sentRequests')) {
-      this.store.dispatch(new UserActions.UpdateSentRequests(JSON.parse(this.cookieS.get('sentRequests'))));
-    }
-    if (this.cookieS.check('receivedRequests')) {
-      this.store.dispatch(new UserActions.SetFriendRequests(JSON.parse(this.cookieS.get('receivedRequests'))));
-    }
-  }
+  constructor(private http: HttpClient, private store: Store<fromApp.AppState>) {}
 
   addFriend(friendID:string) {
     return this.http.post(environment.apiEndpoint + 'friendships/' + friendID, {}, {
@@ -56,11 +41,10 @@ export class UserService {
   }
 
   isFriend(userID: string): boolean {
-    this.store.select(UserSelectors.selectUserFriends).subscribe((friendsArr) => {
+    this.store.select(UserSelectors.selectUserFriends).pipe(take(1)).subscribe((friendsArr) => {
       this.friends = friendsArr;
     })
-    const friendsID = this.friends.map((f)=> f.id);
-    return friendsID.includes(userID);
+    return this.friends.map((f)=> f.friend.id).includes(userID);
   }
 
   acceptFriendRequest(uid: string, friendId: string) {

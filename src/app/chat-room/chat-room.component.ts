@@ -1,7 +1,6 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Store } from '@ngrx/store';
-import { CookieService } from 'ngx-cookie-service';
 import { ChatData } from '../models/chatData.model';
 import { CustomCookieService } from '../services/customCookie.service';
 import { take } from 'rxjs/operators';
@@ -17,7 +16,7 @@ import * as UserSelectors from '../user/store/user.selectors';
 export class ChatRoomComponent implements OnInit {
   openChats$: Observable<ChatData[]>;
   
-  constructor(private store: Store<fromApp.AppState>, private cookieS: CookieService, private customCS: CustomCookieService) { }
+  constructor(private store: Store<fromApp.AppState>, private customCS: CustomCookieService) { }
 
   @HostListener('window:beforeunload')
   saveOpenedChats() {

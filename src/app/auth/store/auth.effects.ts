@@ -10,6 +10,7 @@ import { ToastService } from 'src/app/services/toast.service';
 import { NgxUiLoaderService } from 'ngx-ui-loader';
 import { DecodedAccessToken } from 'src/app/models/decodedAccessToken.model';
 import { CustomCookieService } from 'src/app/services/customCookie.service';
+import { CookieService } from 'ngx-cookie-service';
 import * as AuthActions from './auth.actions';
 import * as UserActions from '../../user/store/user.actions';
 
@@ -26,8 +27,8 @@ export class AuthEffects {
                 .pipe(
                     exhaustMap((tokens: AuthTokens) => {
                         const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
-                        this.customCS.username = decodedToken.user.username;
-                        this.customCS.tokens = tokens;
+                        this.cookieS.set('tokens', JSON.stringify(tokens));
+                        this.customCS.user = decodedToken.user.username;
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
                             new UserActions.SetUserInfo(decodedToken.user)
@@ -58,8 +59,8 @@ export class AuthEffects {
                 .pipe(
                     exhaustMap((tokens: AuthTokens) => {
                         const decodedToken: DecodedAccessToken = this.decodeToken(tokens.accessToken);
-                        this.customCS.username = decodedToken.user.username;
-                        this.customCS.tokens = tokens;
+                        this.cookieS.set('tokens', JSON.stringify(tokens));
+                        this.customCS.user = decodedToken.user.username;
                         return [
                             new AuthActions.Login({ tokens: tokens, username: decodedToken.user.username, userID: decodedToken.user.id }),
                             new UserActions.SetUserInfo(decodedToken.user),
@@ -85,6 +86,7 @@ export class AuthEffects {
         private authService: AuthService,
         private ts: ToastService,
         private loader: NgxUiLoaderService,
+        private cookieS: CookieService,
         private customCS: CustomCookieService) { }
 
     decodeToken(token: string) {
