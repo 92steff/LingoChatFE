@@ -25,6 +25,7 @@ export const RETRIEVE_CHATS = 'RETRIEVE_CHATS';
 export const CLOSE_CHAT = 'CLOSE_CHAT';
 export const GET_MESSAGES = 'GET_MESSAGES';
 export const POST_MESSAGE = 'POST_MESSAGE';
+export const CLEAR_STATE = 'CLEAR_STATE';
 
 export class GetUser implements Action {
     readonly type = GET_USER;
@@ -144,6 +145,10 @@ export class PostMessage implements Action {
     constructor(public payload: Message) {}
 }
 
+export class ClearState implements Action {
+    readonly type = CLEAR_STATE;
+}
+
 export type UserActions = GetUser
     |   SetUserInfo
     |   SendFriendRequest
@@ -164,4 +169,5 @@ export type UserActions = GetUser
     |   RetrieveChats
     |   CloseChat
     |   GetMessages
-    |   PostMessage;
+    |   PostMessage
+    |   ClearState;

@@ -85,6 +85,15 @@ export function userReducer(state = initialState, action: UserActions.UserAction
                 ...state,
                 openedChats: filterdArr
             }
+        case UserActions.CLEAR_STATE:
+            return {
+                friends: [],
+                chats: [],
+                openedChats: [],
+                sentRequests: [],
+                receivedRequests: [],
+                userProfileInfo: null
+            };
         default: return state;
     }
 }

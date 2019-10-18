@@ -36,6 +36,7 @@ export function authReducer(state = initialState, action: AuthActions.AuthAction
             return {
                 ...state,
                 loggedUser: null,
+                userId: null,
                 tokens: null,
                 authenticated: false,
                 error: null

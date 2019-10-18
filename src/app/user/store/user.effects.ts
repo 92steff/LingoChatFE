@@ -5,16 +5,16 @@ import { Store } from '@ngrx/store';
 import { UserService } from '../user.service';
 import { User } from '../../models/user.model';
 import { CookieService } from 'ngx-cookie-service';
-import { from, throwError } from 'rxjs';
+import { throwError } from 'rxjs';
 import { ToastService } from 'src/app/services/toast.service';
 import { HttpResponse } from '@angular/common/http';
 import { Chat } from 'src/app/models/chat.model';
+import { CustomCookieService } from 'src/app/services/customCookie.service';
 import { Message } from 'src/app/models/message.model';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
 import * as UserSelectors from './user.selectors';
-import { CustomCookieService } from 'src/app/services/customCookie.service';
 
 @Injectable()
 export class UserEffects {
@@ -27,7 +27,10 @@ export class UserEffects {
         switchMap((userID: string) => {
             return this.userS.getUser(userID)
                 .pipe(
-                    map((user: User) => new UserActions.SetUserInfo(user)),
+                    map((user: User) => {
+                        this.customCS.userProfile = user;
+                        return new UserActions.SetUserInfo(user)
+                    }),
                     catchError((err: Error) => throwError(err))
             )
         })
@@ -40,7 +43,7 @@ export class UserEffects {
             return this.userS.getFriends()
                 .pipe(
                     map((friends: User[]) => {
-                        this.cookieS.set('userFriends', JSON.stringify(friends));
+                        this.customCS.userFriends = friends;
                         return new UserActions.SetFriends(friends);
                     }),
                     catchError((err) => throwError(err))
@@ -60,7 +63,6 @@ export class UserEffects {
                     map((res: HttpResponse<Object>) => {
                         if (res.status === 201) {
                             return new UserActions.UpdateSentRequests(friend.id);
-                            // return new UserActions.UpdateFriends(data.friend);
                         }
                     }),
                     catchError((err: Error) => {
@@ -90,13 +92,7 @@ export class UserEffects {
                 .pipe(
                     mergeMap((res: HttpResponse<Object>) => {
                         if (res.status === 200) {
-                            if (this.cookieS.check('userFriends')) {
-                                const friends: User[] = JSON.parse(this.cookieS.get('userFriends'));
-                                friends.push(data.friend);
-                                this.cookieS.set('userFriends', JSON.stringify(friends));
-                            } else {
-                                this.cookieS.set('userFriends', JSON.stringify([data.friend]));
-                            }
+                                this.customCS.updateFriends(data.friend);
                             return [
                                 new UserActions.UpdateFriends(data.friend),
                                 new UserActions.RemoveFriendRequest(data.friend.id)
@@ -127,6 +123,7 @@ export class UserEffects {
             return this.userS.getChats()
                 .pipe(
                     map((chats: Chat[]) => {
+                        this.customCS.userChats = chats;
                         return new UserActions.SetChats(chats)
                     }),
                     catchError(err => throwError(err))
@@ -183,7 +180,7 @@ export class UserEffects {
             return this.userS.getFriendRequests()
                 .pipe(
                     map((req: User[]) => {
-                        this.cookieS.set('receivedRequests', JSON.stringify(req));
+                        this.customCS.receivedRequests = req;
                         return new UserActions.SetFriendRequests(req);
                     }),
                     catchError((err: Error) => {
