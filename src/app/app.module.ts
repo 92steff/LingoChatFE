@@ -40,7 +40,8 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
   fgsType: SPINNER.ballSpinClockwise,
   fgsSize: 35,
   fgsColor: '#333',
-  hasProgressBar: false
+  hasProgressBar: false,
+  overlayColor: 'transparent'
 };
 
 @NgModule({
