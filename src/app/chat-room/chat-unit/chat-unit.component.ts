@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/models/user.model';
+import { ChatData } from 'src/app/models/chatData.model';
 import { Store } from '@ngrx/store';
-import { Message } from '@angular/compiler/src/i18n/i18n_ast';
 import { CustomCookieService } from 'src/app/services/customCookie.service';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from '../../user/store/user.actions';
 
@@ -12,16 +12,16 @@ import * as UserActions from '../../user/store/user.actions';
   styleUrls: ['./chat-unit.component.less']
 })
 export class ChatUnitComponent implements OnInit {
-  @Input('userData') userData: User;
-  messages: Message[];
+  @Input('userData') userData: ChatData;
+  faPaperPlane = faPaperPlane;
 
   constructor(private store: Store<fromApp.AppState>, private customCS: CustomCookieService) { }
 
   ngOnInit() {}
 
   exitChat() {
-    this.customCS.closeChat(this.userData.id);
-    this.store.dispatch(new UserActions.CloseChat(this.userData.id));
+    this.customCS.closeChat(this.userData.user.id);
+    this.store.dispatch(new UserActions.CloseChat(this.userData.user.id));
   }
 
 }

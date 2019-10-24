@@ -1,7 +1,7 @@
 <div class="chatWrapper">
   <div class="chatUnitWrapper" *ngFor="let chat of openChats$ | async">
     <app-chat-unit 
-      [userData]="chat.user">
+      [userData]="chat">
     </app-chat-unit>
   </div>
 </div>

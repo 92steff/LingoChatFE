@@ -1,6 +1,6 @@
 <div class="chatContainer">
     <div class="chatUnitHeader">
-        <app-user-head [user]="userData">
+        <app-user-head [user]="userData.user">
             <div>
                 <a (click)="exitChat()" class="close" aria-label="Close">&times;</a>
             </div>
@@ -8,10 +8,25 @@
     </div>
     
     <div class="chatFeedWrapper">
-        <app-chat-feed></app-chat-feed>
+        <div class="feed pt-3">
+            <div class="cont" *ngFor="let message of userData.messages">
+              <app-message [chatMessage]="message"></app-message>
+            </div>
+        </div>
     </div>
     
     <div class="chatFormWrapper">
-        <app-chat-form></app-chat-form>
+        <div class="input-group">
+            <input 
+              type="text"
+              class="form-control"
+              (keydown)="onSubmit($event)"
+              >
+            <div class="input-group-append">
+                <button class="btn btn-light" (click)="onSend()">
+                  <fa-icon [icon]="faPaperPlane"></fa-icon>
+                </button>
+            </div>
+        </div>
     </div>
 </div>

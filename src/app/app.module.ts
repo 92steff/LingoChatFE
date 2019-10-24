@@ -15,8 +15,6 @@ import { FriendListComponent } from './chat-room/friend-list/friend-list.compone
 import { HeaderComponent } from './header/header.component';
 import { ChatRoomComponent } from './chat-room/chat-room.component';
 import { ChatUnitComponent } from './chat-room/chat-unit/chat-unit.component';
-import { ChatFeedComponent } from './chat-room/chat-feed/chat-feed.component';
-import { ChatFormComponent } from './chat-room/chat-form/chat-form.component';
 import { MessageComponent } from './chat-room/message/message.component';
 import { UserHeadComponent } from './shared/user-head/user-head.component';
 import { SignInComponent } from './auth/sign-in/sign-in.component';
@@ -53,8 +51,6 @@ const ngxUiLoaderConfig: NgxUiLoaderConfig = {
     HeaderComponent,
     ChatRoomComponent,
     ChatUnitComponent,
-    ChatFeedComponent,
-    ChatFormComponent,
     MessageComponent,
     UserHeadComponent,
     SignInComponent,
