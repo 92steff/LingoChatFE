@@ -12,35 +12,39 @@ import * as AuthSelectors from '../../auth/store/auth.selectors';
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.less']
 })
+
 export class UserProfileComponent implements OnInit, OnDestroy {
   user: User;
   userDataForm: FormGroup;
   passChangeForm: FormGroup;
   isEditing: boolean = false;
   isPassEditing: boolean = false;
-  isOwnProfile: boolean = false;
+  myId: string;
   subscription: Subscription;
+  subscription1: Subscription;
 
   constructor(private store: Store<fromApp.AppState>) { }
 
   ngOnInit() {
-    this.subscription.add(this.store.select(UserSelectors.selectUserInfo).subscribe(
+    this.subscription = this.store.select(UserSelectors.selectUserInfo).subscribe(
       (user: User) => this.user = user
-    ))
-  
+    );
+    
+    this.subscription1 = this.store.select(AuthSelectors.selectUserID).subscribe( // hereeeee
+      (uid) =>  this.myId = uid
+    );
+
     this.userDataForm = new FormGroup({
       firstName: new FormControl(this.user.firstName),
       lastName: new FormControl(this.user.lastName),
       email: new FormControl(this.user.username)
-    })
-    this.subscription.add(this.store.select(AuthSelectors.selectUserID).subscribe(
-      (uid) => this.isOwnProfile = (uid === this.user.id)
-    ))
+    });
+    
     this.passChangeForm = new FormGroup({
       oldPassword: new FormControl(null),
       newPassword: new FormControl(null),
       reNewPassword: new FormControl(null)
-    }, { validators: this.passMatch, updateOn: 'submit' })
+    }, { validators: this.passMatch, updateOn: 'submit' });
   }
 
   changeInfo() {
@@ -74,6 +78,6 @@ export class UserProfileComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
+    this.subscription1.unsubscribe();
   }
-
 }

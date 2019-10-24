@@ -41,7 +41,7 @@
       <button type="submit" style="display: none" #submitBtn></button>
     </form>
 
-    <form [formGroup]="passChangeForm" (ngSubmit)="changePassword()">
+    <form [formGroup]="passChangeForm" (ngSubmit)="changePassword()" *ngIf="myId === user.id">
       <div class="btnPassCnt">
         <button type="submit" class="btn btn-info mx-5" *ngIf="!isPassEditing" (click)="isPassEditing = !isPassEditing">Change Password</button>
         <button type="button" class="btn btn-danger" *ngIf="isPassEditing" (click)="cancelPassEdit()">Cancel</button>
@@ -59,7 +59,7 @@
       </div>
 
       <div class="m-5">
-        <input type="password" class="form-control text-center" formControlName="reNewPassword" *ngIf="isPassEditing" A
+        <input type="password" class="form-control text-center" formControlName="reNewPassword" *ngIf="isPassEditing"
           placeholder="Re-enter New Password">
       </div>
 

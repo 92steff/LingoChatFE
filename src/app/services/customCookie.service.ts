@@ -18,6 +18,7 @@ export class CustomCookieService {
     friends: User[] = [];
     sentRequests: string[] = []; // user ids;
     receivedRequests: User[] = [];
+    searchedProfile: User = null;
 
     constructor(private cookieS: CookieService, private store: Store<fromApp.AppState>, private jwtHelper: JwtHelperService) {}
 
@@ -50,6 +51,10 @@ export class CustomCookieService {
         this.receivedRequests = req;
     }
 
+    set userProfile(profile: User) {
+        this.searchedProfile = profile;
+    }
+
     updateFriends(friend: User) {
         this.friends.push(friend);
     }
@@ -61,6 +66,7 @@ export class CustomCookieService {
         this.cookieS.set('sentRequests', JSON.stringify(this.sentRequests));
         this.cookieS.set('receivedRequests', JSON.stringify(this.receivedRequests));
         this.cookieS.set('username', this.username);
+        this.cookieS.set('userProfile', JSON.stringify(this.searchedProfile));
     }
 
     retrieveData() {
@@ -92,6 +98,11 @@ export class CustomCookieService {
             const receivedReq = JSON.parse(this.cookieS.get('receivedRequests'));
             this.receivedRequests = receivedReq;
             this.store.dispatch(new UserActions.SetFriendRequests(receivedReq));
+        }
+        if (this.cookieS.check('userProfile')) {
+            const searchedUserProfile = JSON.parse(this.cookieS.get('userProfile'));
+            this.searchedProfile = searchedUserProfile;
+            this.store.dispatch(new UserActions.SetUserInfo(searchedUserProfile));
         }
     }
 }

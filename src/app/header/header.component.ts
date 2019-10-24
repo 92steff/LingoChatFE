@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Router } from '@angular/router';
 import { AuthService } from '../auth/auth.service';
 import { Observable } from 'rxjs';
 import { User } from '../models/user.model';
 import { UserService } from '../user/user.service';
+import { CustomCookieService } from '../services/customCookie.service';
 import { take } from 'rxjs/operators';
 import { faBell } from '@fortawesome/free-solid-svg-icons';
 import * as fromApp from '../store/app.reducers';
@@ -26,11 +27,13 @@ export class HeaderComponent implements OnInit {
   isNtfOpen: boolean = false;
   faBell = faBell;
   friendRequests: Observable<User[]>;
+  myId: string;
 
   constructor(private store: Store<fromApp.AppState>, 
     private authS: AuthService, 
     private router: Router, 
-    private userS: UserService) {
+    private userS: UserService,
+    private customCS: CustomCookieService) {
       userS.getUsers().subscribe((users: []) => {
         this.usersArr = users;
     })
@@ -40,6 +43,12 @@ export class HeaderComponent implements OnInit {
     this.loggedUser$ = this.store.select(authSelectors.selectLoggedUser);
     document.addEventListener('click', this.clickAway, true);
     this.friendRequests = this.store.select(UserSelectors.selectReceivedRequest);
+    this.store.select(authSelectors.selectUserID).pipe(take(1)).subscribe(id => this.myId = id);
+  }
+
+  @HostListener('window:beforeunload')
+  storeData() {
+    this.customCS.storeData();
   }
 
   checkFriendship(userID: string) {
@@ -56,6 +65,11 @@ export class HeaderComponent implements OnInit {
     return res;
   }
   
+  openProfile(id: string) {
+    this.store.dispatch(new UserActions.GetUser(id));
+    this.router.navigate(['/user-profile']);
+  }
+
   clickAway = (event: MouseEvent) => {
     let target = <HTMLSelectElement> event.target;
     const searchArea = document.getElementById('searchArea');
@@ -68,6 +82,7 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.store.dispatch(new AuthActions.Logout());
+    this.store.dispatch(new UserActions.ClearState());
     this.authS.logout();
     this.router.navigate(['/sign-in']);
     document.removeEventListener('click', this.clickAway, true);

@@ -7,7 +7,7 @@
       <input class="form-control" [(ngModel)]="searchUsers" type="text" placeholder="Search">
       <div *ngIf="searchUsers" class="search-results">
         <ul *ngFor="let user of usersArr | filter: searchUsers">
-          <li>
+          <li (click)="openProfile(user.id)">
             <app-user-head [user]="user">
               <div class="float-right" *ngIf="!checkFriendship(user.id)">
                 <button type="button" class="btn btn-info" *ngIf="!isRequestPending(user.id)" (click)="addFriend(user)">Add Friend</button>
@@ -49,7 +49,7 @@
           </ul>
         </div>
       <div class="profile-link">
-        <a routerLink="/user-profile" *ngIf="isInChatRoom()">{{loggedUser$ | async}}</a>
+        <a *ngIf="isInChatRoom()" (click)="openProfile(myId)">{{loggedUser$ | async}}</a>
         <a routerLink="/chat-room" *ngIf="!isInChatRoom()">Back</a>
       </div>
       <div class="logout">
