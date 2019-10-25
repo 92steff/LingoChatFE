@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Message } from 'src/app/models/message.model';
 
 @Component({
   selector: 'app-message',
@@ -6,11 +7,10 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./message.component.less']
 })
 export class MessageComponent implements OnInit {
-  @Input() chatMessage;
+  @Input() chatMessage: Message;
 
   constructor() { }
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
 }

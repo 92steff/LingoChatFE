@@ -84,7 +84,20 @@ export function userReducer(state = initialState, action: UserActions.UserAction
             return {
                 ...state,
                 openedChats: filterdArr
+            };
+        case UserActions.UPDATE_MESSAGES:
+            const chatToUpdate = state.openedChats.find(chat => chat.chatId === action.payload.chatId);
+            chatToUpdate.messages.push(action.payload.message);
+            const updatedOpenChats = [...state.openedChats];
+            for (let i=0; i < updatedOpenChats.length; i++) {
+                if (updatedOpenChats[i].chatId === chatToUpdate.chatId) {
+                    updatedOpenChats[i] = chatToUpdate;
+                }
             }
+            return {
+                ...state,
+                openedChats: updatedOpenChats
+            };
         case UserActions.CLEAR_STATE:
             return {
                 friends: [],

@@ -11,6 +11,7 @@ import { HttpResponse } from '@angular/common/http';
 import { Chat } from 'src/app/models/chat.model';
 import { CustomCookieService } from 'src/app/services/customCookie.service';
 import { Message } from 'src/app/models/message.model';
+import { ChatDetail } from 'src/app/models/chatDetail.model';
 import * as fromApp from '../../store/app.reducers';
 import * as UserActions from './user.actions';
 import * as AuthSelectors from '../../auth/store/auth.selectors';
@@ -141,8 +142,8 @@ export class UserEffects {
             return this.userS.getChatMessages(chat.chat.id)
                 .pipe(
                     map((messages: Message[]) => {
-                        this.customCS.addToOpenChats({user: chat.participants[0], messages: messages});
-                        return new UserActions.OpenChat({user: chat.participants[0], messages: messages})
+                        this.customCS.addToOpenChats({user: chat.participants[0], chatId: chat.chat.id, messages: messages});
+                        return new UserActions.OpenChat({user: chat.participants[0], chatId: chat.chat.id, messages: messages})
                     }),
                     catchError(err => throwError(err))
                 )
@@ -158,20 +159,31 @@ export class UserEffects {
         switchMap((friend: User) => {
             return this.userS.createChat(friend)
                 .pipe(
-                    map(() => {
-                        this.customCS.addToOpenChats({user: friend, messages: []});
-                        return new UserActions.OpenChat({user: friend, messages: []});
+                    map((chat: ChatDetail ) => {
+                        this.customCS.addToOpenChats({user: friend, chatId: chat.id, messages: []});
+                        return new UserActions.OpenChat({user: friend, chatId: chat.id, messages: []});
                     }),
                     catchError(err => throwError(err))
                 )
         })
     )
 
-    // @Effect()
-    // getMessages = this.actions$.pipe(
-    //     ofType(UserActions.GET_MESSAGES),
-
-    // )
+    @Effect()
+    sendMessage = this.actions$.pipe(
+        ofType(UserActions.SEND_MESSAGE),
+        map((action: UserActions.SendMessage) => {
+            return action.payload;
+        }),
+        switchMap((data: {chatId: string, message: string}) => {
+            return this.userS.sendMessage(data.chatId, data.message).pipe(
+                map((msg: Message) => {
+                    console.log(msg);
+                    return new UserActions.UpdateMessages({chatId: data.chatId, message: msg});
+                }),
+                catchError(err => throwError(err))
+            )
+        })
+    )
 
     @Effect()
     getFriendRequests = this.actions$.pipe(

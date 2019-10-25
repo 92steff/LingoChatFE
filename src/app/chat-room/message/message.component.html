@@ -3,7 +3,7 @@
         <img src="../../../assets//f7a121a3f7a929ffb4dbc3ae241b3b4b6eaaed1d.jpg">
     </div>
     <div class="msgContent">
-        {{ chatMessage.msg }}
-    <span class="msgTime">20:00AM, Today</span>
+        {{ chatMessage.text }}
+    <span class="msgTime">{{chatMessage.createdAt | date: 'E, h:mm a'}}</span>
     </div>
 </div>

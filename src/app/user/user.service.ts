@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { Store } from '@ngrx/store';
 import { User } from '../models/user.model';
@@ -53,6 +53,14 @@ export class UserService {
     }, {
       observe: 'response'
     })
+  }
+
+  sendMessage(chatId: string, message: string) {
+    return this.http.post(environment.apiEndpoint + 'chats/' + chatId, {
+      text: message
+    }, {
+      headers: new HttpHeaders().set('Content-Type', 'application/json')
+    });
   }
 
   getChats() {
