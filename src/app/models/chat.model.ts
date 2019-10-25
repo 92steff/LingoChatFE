@@ -1,11 +1,8 @@
 import { User } from './user.model';
+import { ChatDetail } from './chatDetail.model';
 
 export class Chat {
-    chat: {
-        id: string;
-        name: string;
-        createdAt: number;
-    };
+    chat: ChatDetail;
     participants: User[];
     lastMessage: string;
 }
