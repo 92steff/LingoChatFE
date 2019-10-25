@@ -10,7 +10,10 @@
     <div class="chatFeedWrapper">
         <div class="feed pt-3">
             <div class="cont" *ngFor="let message of userData.messages">
-              <app-message [chatMessage]="message"></app-message>
+              <app-message 
+                [chatMessage]="message"
+                [ownContent]="isOwnContent">
+            </app-message>
             </div>
         </div>
     </div>
